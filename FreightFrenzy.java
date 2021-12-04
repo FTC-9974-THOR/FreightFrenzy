@@ -3,43 +3,39 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.ftc9974.thorcore.control.TrapezoidalMotionProfile;
-import org.ftc9974.thorcore.control.navigation.Fusion2;
-import org.ftc9974.thorcore.control.navigation.IMUNavSource;
+import org.firstinspires.ftc.teamcode.hardware.Arm;
+import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
-import java.util.concurrent.TimeUnit;
+import org.ftc9974.thorcore.util.BooleanEdgeDetector;
 
-import static com.qualcomm.robotcore.hardware.DcMotor.RunMode.RUN_USING_ENCODER;
-
-//magic angle: 35.3 degrees (used to be 33.7 degrees)
 @TeleOp(name = "Freight Frenzy", group = "Teleops")
 public class FreightFrenzy extends OpMode {
 
     MecanumDrive md;
+    Arm arm;
+    CarouselSpinner cs;
 
-    private boolean lastAState;
-    TrapezoidalMotionProfile motionProfile;
+    private boolean manualArmControlActive;
+
+    private BooleanEdgeDetector controlModeSwitchDetector;
+    private boolean controlModeSwitch;
 
     @Override
     public void init() {
         md = new MecanumDrive(hardwareMap);
+        arm = new Arm(hardwareMap);
+        cs = new CarouselSpinner(hardwareMap);
 
-        md.setAxisInversion(true,false, true);
+        manualArmControlActive = true;
 
-        /*imu = new IMUNavSource(hardwareMap);
-        f2 = new Fusion2();*/
+        controlModeSwitch = false;
+        controlModeSwitchDetector = new BooleanEdgeDetector(false);
 
-        //et = new ElapsedTime();
+        arm.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        motionProfile = new TrapezoidalMotionProfile(
-                new TrapezoidalMotionProfile.Node(0,0),
-                new TrapezoidalMotionProfile.Node(0.5, 0.3),
-                new TrapezoidalMotionProfile.Node(1,1)
-        );
-
+        telemetry.addData("PIDF Coefficients:" ,arm.shoulder.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
     }
 
     @Override
@@ -50,9 +46,79 @@ public class FreightFrenzy extends OpMode {
     @Override
     public void loop() {
 
-        double t = Math.copySign(motionProfile.apply(Math.abs(gamepad1.left_stick_x)), -gamepad1.left_stick_x);
-        md.drive(gamepad1.right_stick_y, -gamepad1.right_stick_x,t);
+        double armInput = -gamepad2.right_stick_y;
 
+        controlModeSwitchDetector.update(gamepad1.back);
+        if (controlModeSwitchDetector.isRising()) {
+            controlModeSwitch = !controlModeSwitch;
+        }
+
+        if (controlModeSwitch) {
+            md.drive(gamepad1.right_stick_x, -gamepad1.right_stick_y, gamepad1.left_stick_x);
+        } else {
+            md.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+        }
+
+        if(gamepad1.left_bumper){
+            cs.spin(0.7);
+        } else if (gamepad1.right_bumper){
+            cs.spin(-0.7);
+        } else{
+            cs.spin(0);
+        }
+
+        if (gamepad1.left_trigger > 0.3 || gamepad2.left_trigger > 0.3) {
+            arm.spinIntake(-0.45);
+        } else if (gamepad1.right_trigger > 0.3 || gamepad2.right_trigger > 0.3) {
+            arm.spinIntake(0.4);
+        } else {
+            arm.spinIntake(0);
+        }
+
+        if(gamepad2.dpad_up){
+            manualArmControlActive = false;
+            arm.setTargetPosition(Arm.TOP_PLATE);
+        } else if(gamepad2.dpad_left){
+            manualArmControlActive = false;
+            arm.setTargetPosition(Arm.MIDDLE_PLATE);
+        } else if (gamepad2.dpad_down){
+            manualArmControlActive = false;
+            arm.setTargetPosition(Arm.BOTTOM_PLATE);
+        } else if (gamepad2.dpad_right){
+            manualArmControlActive = false;
+            arm.setTargetPosition(Arm.STRAIGHT_UP);
+        }
+
+        if (!manualArmControlActive) {
+            if (Math.abs(armInput) > 0.2) {
+                manualArmControlActive = true;
+                arm.setShoulderPower(armInput);
+            }
+        } else if (arm.shoulder.getCurrentPosition() < 2600 && arm.shoulder.getCurrentPosition() > 200) {
+            arm.setShoulderPower(armInput);
+        } else if (arm.shoulder.getCurrentPosition() > 2600){
+            if(armInput > 0){
+                arm.setShoulderPower(0);
+            } else{
+                arm.setShoulderPower(armInput);
+            }
+        } else if (arm.shoulder.getCurrentPosition() < 200){
+            if(armInput < 0){
+                arm.setShoulderPower(0);
+            } else{
+                arm.setShoulderPower(armInput);
+            }
+        }
+
+        if(gamepad2.x){
+            arm.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        }
+
+        telemetry.addData("Arm position:", arm.shoulder.getCurrentPosition());
+        telemetry.addData("Power:", arm.shoulder.getPower());
+        telemetry.update();
+
+        arm.update();
     }
 
     @Override

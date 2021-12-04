@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.autos;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
@@ -10,21 +9,19 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
-@Autonomous(name = "Warehouse Park", group = "autonomous")
-public class WarehousePark extends LinearOpMode{
+public class DelayedWarehouseParkFar extends LinearOpMode {
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
     private IMUNavSource navSource;
     private Fusion2 f2;
 
-    @Override
     public void runOpMode() throws InterruptedException {
 
         md = new MecanumDrive(hardwareMap);
         calculator = new MecanumEncoderCalculator(27.4, 96);
         navSource = new IMUNavSource(hardwareMap);
-        f2 = new Fusion2(this, md, calculator, navSource,new PIDFCoefficients(0.8,0,0,0));
+        f2 = new Fusion2(this, md, calculator, navSource, new PIDFCoefficients(0.8, 0, 0, 0));
 
         //the speed the robot will start moving at
         f2.setStartSpeed(0.1);
@@ -44,11 +41,12 @@ public class WarehousePark extends LinearOpMode{
         md.setAxisInversion(false, false, false);
         md.setEncoderInversion(true, true, false, false);
 
-        f2.driveToPoint(new Vector2(0,-1450));//this was 0,-1350
+        sleep(20000);
 
-        if(isStopRequested()){
-                return;
+        f2.driveToPoint(new Vector2(0, -1450));//this was 0,-1350
+
+        if (isStopRequested()) {
+            return;
         }
-
     }
 }
