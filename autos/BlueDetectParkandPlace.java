@@ -62,10 +62,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                 return;
             }
         });
-        //webcam.setPipeline(new StackVisionPipeline());
-        // pipeline was never initialized and webcam.setPipeline() was being given a new pipeline
-        // instance. pipeline stayed null and there was no way to access the pipeline that was
-        // actually doing stuff.
+
         pipeline = new RedVisionPipeline();
         webcam.setPipeline(pipeline);
 
@@ -93,6 +90,12 @@ public class BlueDetectParkandPlace extends LinearOpMode {
         f2.setCrawlSpeed(0.3);
 
         f2.setMinTurningSpeed(0.4);
+
+         /*double hMinimum = 30;
+        double hMaximum = 50;//this was 29
+
+        double sMinimum = 120;//this was 50
+        double sMaximum = 200;*/
 
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Front Left Position", md.frontLeft.getCurrentPosition());
@@ -161,17 +164,13 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(300, 0));
-                if (isStopRequested()) {
-                    return;
-                }
 
                 f2.turnToHeading(Math.toRadians(30));
                 if(isStopRequested()){
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 50));
+                f2.driveToPoint(new Vector2(0, 300));
                 if (isStopRequested()) {
                     return;
                 }
@@ -223,16 +222,17 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                //drives into carousel
-                f2.driveToPoint(new Vector2(100, 0));//was -200,0
-                if (isStopRequested()) {
-                    return;
-                }
-
                 f2.turnToHeading(Math.toRadians(30));
                 if(isStopRequested()){
                     return;
                 }
+
+                //drives into carousel
+                f2.driveToPoint(new Vector2(0, 300));//was -200,0
+                if (isStopRequested()) {
+                    return;
+                }
+
 
                 cs.spin(0.5);
 
@@ -300,17 +300,12 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(300, 0));
-                if (isStopRequested()) {
-                    return;
-                }
-
                 f2.turnToHeading(Math.toRadians(30));
                 if(isStopRequested()){
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 50));
+                f2.driveToPoint(new Vector2(0, 300));
                 if (isStopRequested()) {
                     return;
                 }

@@ -150,7 +150,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0,650));
+                f2.driveToPoint(new Vector2(0,800));
                 if(isStopRequested()){
                     return;
                 }
@@ -167,7 +167,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
                 cs.spin(0);
 
-                f2.driveToPoint(new Vector2(0,-1700));
+                f2.driveToPoint(new Vector2(0,-1900));
                 if(isStopRequested()){
                     return;
                 }
@@ -197,7 +197,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
                 }
 
                 //drives to carousel
-                f2.driveToPoint(new Vector2(0, 650));
+                f2.driveToPoint(new Vector2(0, 800));
                 if(isStopRequested()){
                     return;
                 }
@@ -214,7 +214,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
                 cs.spin(0);
 
-                f2.driveToPoint(new Vector2(0,-1700));
+                f2.driveToPoint(new Vector2(0,-1900));
                 if(isStopRequested()){
                     return;
                 }
@@ -263,7 +263,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0,650));
+                f2.driveToPoint(new Vector2(0,800));
                 if(isStopRequested()){
                     return;
                 }
@@ -280,7 +280,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
                 cs.spin(0);
 
-                f2.driveToPoint(new Vector2(0,-1700));
+                f2.driveToPoint(new Vector2(0,-1900));
                 if(isStopRequested()){
                     return;
                 }

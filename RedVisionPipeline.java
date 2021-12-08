@@ -33,7 +33,7 @@ public class RedVisionPipeline extends OpenCvPipeline {
     private static final double Y_SCALE_FACTOR = 480.0 / 720.0;
 
     static final Point LEFT_REGION_ANCHOR_POINT = new Point(650 * X_SCALE_FACTOR,400 * Y_SCALE_FACTOR);//was 500, 105
-    static final Point MIDDLE_REGION_ANCHOR_POINT = new Point(950 * X_SCALE_FACTOR, 400* Y_SCALE_FACTOR);
+    static final Point MIDDLE_REGION_ANCHOR_POINT = new Point(1000 * X_SCALE_FACTOR, 400* Y_SCALE_FACTOR);
 
     static final int REGION_WIDTH = (int) (10 * X_SCALE_FACTOR);
     static final int REGION_HEIGHT = (int) (25 * Y_SCALE_FACTOR);
@@ -121,11 +121,11 @@ public class RedVisionPipeline extends OpenCvPipeline {
         left_region_S_average = (int) Core.mean(left_region_S).val[0];
         middle_region_S_average = (int) Core.mean(middle_region_S).val[0];
 
-        double hMinimum = 30;
-        double hMaximum = 50;//this was 29
+        double hMinimum = 20;//this was 30
+        double hMaximum = 60;//this was 50
 
-        double sMinimum = 120;//this was 50
-        double sMaximum = 200;//this was 255
+        double sMinimum = 70;//this was 120
+        double sMaximum = 220;//this was 200
         /*
          * Draw rectangles showing the three regions on the screen.
          * Simply a visual aid. Serves no functional purpose.
