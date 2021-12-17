@@ -30,7 +30,7 @@ public class Arm{
     public static final int HOME = 0;
     public static final int TOP_PLATE = 1500;
     public static final int MIDDLE_PLATE = 1950;
-    public static final int BOTTOM_PLATE = 2360;
+    public static final int BOTTOM_PLATE = 2285;
     public static final int INTAKE_POSITION = 2700;
     public static final int STRAIGHT_UP = 1200;
 
@@ -59,8 +59,8 @@ public class Arm{
         }
     }
 
-    public void spinIntake(double power){
-        intake.setPower(power);
+    public void spinIntake(double velocity){
+        intake.setVelocity(velocity);
     }
 
     public void setShoulderPower(double power) {
@@ -91,7 +91,7 @@ public class Arm{
             homingSensor.update(isAtHomePosition());
             if (homingSensor.isChanging()) {
                 homed = true;
-                encoderHomeOffset = intake.getCurrentPosition();
+                encoderHomeOffset = shoulder.getCurrentPosition();
             }
         }
     }

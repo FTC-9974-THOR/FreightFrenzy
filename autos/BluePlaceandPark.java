@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.RedVisionPipeline;
@@ -19,8 +20,8 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Autonomous(name = "Red Detect Park and Place", group = "autonomous")
-public class RedDetectParkandPlace extends LinearOpMode{
+@Autonomous(name = "Blue Place and Park", group = "autonomous")
+public class BluePlaceandPark extends LinearOpMode {
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -35,10 +36,12 @@ public class RedDetectParkandPlace extends LinearOpMode{
     RedVisionPipeline pipeline;
     RedVisionPipeline.DuckPosition position;
 
-    @Override
-    public void runOpMode() throws InterruptedException{
+    ElapsedTime et;
 
-        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class,"Webcam 1"));
+    @Override
+    public void runOpMode() throws InterruptedException {
+
+        webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"));
 
         webcam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
 
@@ -59,10 +62,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
                 return;
             }
         });
-        //webcam.setPipeline(new StackVisionPipeline());
-        // pipeline was never initialized and webcam.setPipeline() was being given a new pipeline
-        // instance. pipeline stayed null and there was no way to access the pipeline that was
-        // actually doing stuff.
+
         pipeline = new RedVisionPipeline();
         webcam.setPipeline(pipeline);
 
@@ -73,6 +73,8 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
         arm = new Arm(hardwareMap);
         cs = new CarouselSpinner(hardwareMap);
+
+        et = new ElapsedTime();
 
         //the speed the robot will start moving at
         f2.setStartSpeed(0.5);
@@ -89,6 +91,13 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
         f2.setMinTurningSpeed(0.4);
 
+        //arm.intake.setVelocityPIDFCoefficients(5);
+
+         /*double hMinimum = 30;
+        double hMaximum = 50;//this was 29
+
+        double sMinimum = 120;//this was 50
+        double sMaximum = 200;*/
 
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Front Left Position", md.frontLeft.getCurrentPosition());
@@ -109,6 +118,8 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
         waitForStart();
 
+        et.reset();
+
         TimingUtilities.blockUntil(this, pipeline::hasAnalysis, null, null);
         if (isStopRequested()) return;
 
@@ -116,21 +127,21 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
         arm.homed = true;
 
-        switch(position){
+        switch (position) {
             case LEFT:
 
-                f2.driveToPoint(new Vector2(0,-200));//was -250
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, -250));//was 250
+                if (isStopRequested()) {
                     return;
                 }
 
                 arm.setTargetPosition(Arm.BOTTOM_PLATE);
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
                 f2.turnToHeading(Math.toRadians(180));
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
@@ -141,42 +152,26 @@ public class RedDetectParkandPlace extends LinearOpMode{
                 arm.spinIntake(0);
 
                 arm.setTargetPosition(Arm.HOME);
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
                 f2.turnToHeading(Math.toRadians(-90));
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0,800));
-                if(isStopRequested()){
-                    return;
-                }
-
-
-                f2.driveToPoint(new Vector2(-250,0));
-                if(isStopRequested()){
-                    return;
-                }
-
-                cs.spin(-0.5);
-
-                sleep(5000);
-
-                cs.spin(0);
-
-                f2.driveToPoint(new Vector2(0,-1900));
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, 900));
+                if (isStopRequested()) {
                     return;
                 }
 
                 break;
+
             case CENTER:
 
-                f2.driveToPoint(new Vector2(0,-325));
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, -350));
+                if (isStopRequested()) {
                     return;
                 }
 
@@ -186,61 +181,44 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
                 arm.spinIntake(0);
 
-                f2.driveToPoint(new Vector2(0,150));
-                if(isStopRequested()){
+
+                f2.driveToPoint(new Vector2(0, 150));
+                if (isStopRequested()) {
                     return;
                 }
 
                 f2.turnToHeading(Math.toRadians(-90));
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
                 //drives to carousel
-                f2.driveToPoint(new Vector2(0, 800));
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, 900));
+                if (isStopRequested()) {
                     return;
                 }
 
-                //drives into carousel
-                f2.driveToPoint(new Vector2(-100, 0));//was -200,0
-                if(isStopRequested()){
-                    return;
-                }
-
-                cs.spin(-0.5);
-
-                sleep(5000);
-
-                cs.spin(0);
-
-                f2.driveToPoint(new Vector2(0,-1900));
-                if(isStopRequested()){
-                    return;
-                }
                 break;
 
             case RIGHT:
 
-                f2.driveToPoint(new Vector2(0,-225));
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, -250));
+                if (isStopRequested()) {
                     return;
                 }
 
                 arm.setTargetPosition(Arm.TOP_PLATE);
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
                 f2.turnToHeading(Math.toRadians(180));
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
-                f2.setCruiseSpeed(0.5);
-
-                f2.driveToPoint(new Vector2(0,50));
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, 50));
+                if (isStopRequested()) {
                     return;
                 }
 
@@ -250,48 +228,28 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
                 arm.spinIntake(0);
 
-                arm.setTargetPosition(Arm.HOME);
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, -50));
+                if (isStopRequested()) {
                     return;
                 }
 
-                f2.setCruiseSpeed(1);
-
-                f2.driveToPoint(new Vector2(0,-50));
-                if(isStopRequested()){
+                arm.setTargetPosition(Arm.HOME);
+                if (isStopRequested()) {
                     return;
                 }
 
                 f2.turnToHeading(Math.toRadians(-90));
-                if(isStopRequested()){
+                if (isStopRequested()) {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0,700));
-                if(isStopRequested()){
-                    return;
-                }
-
-
-                f2.driveToPoint(new Vector2(-250,0));
-                if(isStopRequested()){
-                    return;
-                }
-
-                cs.spin(-0.5);
-
-                sleep(5000);
-
-                cs.spin(0);
-
-                f2.driveToPoint(new Vector2(0,-1900));
-                if(isStopRequested()){
+                f2.driveToPoint(new Vector2(0, 900));
+                if (isStopRequested()) {
                     return;
                 }
 
                 break;
         }
-
     }
 }
 

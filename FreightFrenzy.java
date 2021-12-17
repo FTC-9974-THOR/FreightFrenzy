@@ -60,17 +60,17 @@ public class FreightFrenzy extends OpMode {
         }
 
         if(gamepad1.left_bumper){
-            cs.spin(0.7);
+            cs.spin(0.75);
         } else if (gamepad1.right_bumper){
-            cs.spin(-0.7);
+            cs.spin(-0.75);
         } else{
             cs.spin(0);
         }
 
         if (gamepad1.left_trigger > 0.3 || gamepad2.left_trigger > 0.3) {
-            arm.spinIntake(-0.45);
+            arm.spinIntake(-300);
         } else if (gamepad1.right_trigger > 0.3 || gamepad2.right_trigger > 0.3) {
-            arm.spinIntake(0.4);
+            arm.spinIntake(300);
         } else {
             arm.spinIntake(0);
         }

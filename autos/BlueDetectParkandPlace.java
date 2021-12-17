@@ -91,6 +91,8 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
         f2.setMinTurningSpeed(0.4);
 
+        //arm.intake.setVelocityPIDFCoefficients(5);
+
          /*double hMinimum = 30;
         double hMaximum = 50;//this was 29
 
@@ -128,7 +130,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
         switch (position) {
             case LEFT:
 
-                f2.driveToPoint(new Vector2(0, -250));
+                f2.driveToPoint(new Vector2(0, -225));//was 250
                 if (isStopRequested()) {
                     return;
                 }
@@ -143,9 +145,9 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                arm.spinIntake(-0.65);
+                arm.spinIntake(-300);
 
-                sleep(2000);
+                sleep(3500);
 
                 arm.spinIntake(0);
 
@@ -195,14 +197,14 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
             case CENTER:
 
-                f2.driveToPoint(new Vector2(0, -350));
+                f2.driveToPoint(new Vector2(0, -325));
                 if (isStopRequested()) {
                     return;
                 }
 
-                arm.spinIntake(-0.7);
+                arm.spinIntake(-300);
 
-                sleep(2000);
+                sleep(3500);
 
                 arm.spinIntake(0);
 
@@ -254,7 +256,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
             case RIGHT:
 
-                f2.driveToPoint(new Vector2(0, -250));
+                f2.driveToPoint(new Vector2(0, -225));
                 if (isStopRequested()) {
                     return;
                 }
@@ -274,9 +276,9 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                arm.spinIntake(-0.65);
+                arm.spinIntake(-300);
 
-                sleep(2000);
+                sleep(3500);
 
                 arm.spinIntake(0);
 
