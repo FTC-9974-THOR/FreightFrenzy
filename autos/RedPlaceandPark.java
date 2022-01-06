@@ -126,7 +126,7 @@ public class RedPlaceandPark extends LinearOpMode {
         switch (position) {
             case LEFT:
 
-                f2.driveToPoint(new Vector2(0, -250));//was 250
+                f2.driveToPoint(new Vector2(0, -225));//was 250
                 if (isStopRequested()) {
                     return;
                 }
@@ -157,7 +157,7 @@ public class RedPlaceandPark extends LinearOpMode {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 900));
+                f2.driveToPoint(new Vector2(0, 1300));
                 if (isStopRequested()) {
                     return;
                 }
@@ -188,7 +188,7 @@ public class RedPlaceandPark extends LinearOpMode {
                 }
 
                 //drives to carousel
-                f2.driveToPoint(new Vector2(0, 900));
+                f2.driveToPoint(new Vector2(0, 1300));
                 if (isStopRequested()) {
                     return;
                 }
@@ -238,7 +238,7 @@ public class RedPlaceandPark extends LinearOpMode {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 900));
+                f2.driveToPoint(new Vector2(0, 1300));
                 if (isStopRequested()) {
                     return;
                 }

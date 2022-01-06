@@ -119,7 +119,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
         switch(position){
             case LEFT:
 
-                f2.driveToPoint(new Vector2(0,-200));//was -250
+                f2.driveToPoint(new Vector2(0,-225));//was -250
                 if(isStopRequested()){
                     return;
                 }
@@ -156,7 +156,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
                 }
 
 
-                f2.driveToPoint(new Vector2(-250,0));
+                f2.driveToPoint(new Vector2(-225,0));
                 if(isStopRequested()){
                     return;
                 }
@@ -222,7 +222,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
 
             case RIGHT:
 
-                f2.driveToPoint(new Vector2(0,-225));
+                f2.driveToPoint(new Vector2(0,-275));
                 if(isStopRequested()){
                     return;
                 }
@@ -244,7 +244,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
                     return;
                 }
 
-                arm.spinIntake(-300);
+                arm.spinIntake(-350);
 
                 sleep(3500);
 

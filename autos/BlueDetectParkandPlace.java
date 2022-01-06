@@ -256,7 +256,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
             case RIGHT:
 
-                f2.driveToPoint(new Vector2(0, -225));
+                f2.driveToPoint(new Vector2(0, -275));
                 if (isStopRequested()) {
                     return;
                 }
@@ -276,7 +276,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                arm.spinIntake(-300);
+                arm.spinIntake(-350);
 
                 sleep(3500);
 

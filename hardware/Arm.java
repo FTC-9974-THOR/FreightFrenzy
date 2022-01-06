@@ -14,12 +14,11 @@ import org.ftc9974.thorcore.util.BooleanEdgeDetector;
 
 public class Arm{
 
-
     public boolean homed;
 
     private int encoderHomeOffset;
 
-    private final BooleanEdgeDetector homingSensor;
+    private final BooleanEdgeDetector homingSensorBED;
 
     @Hardware
     public DcMotorEx shoulder, intake;
@@ -41,7 +40,7 @@ public class Arm{
 
         shoulder.setTargetPosition(Arm.HOME);
 
-        homingSensor = new BooleanEdgeDetector(isAtHomePosition());
+        homingSensorBED = new BooleanEdgeDetector(isAtHomePosition());
 
         intake.setDirection(DcMotorSimple.Direction.REVERSE);
     }
@@ -88,8 +87,8 @@ public class Arm{
 
     public void update() {
         if (!homed) {
-            homingSensor.update(isAtHomePosition());
-            if (homingSensor.isChanging()) {
+            homingSensorBED.update(isAtHomePosition());
+            if (homingSensorBED.isChanging()) {
                 homed = true;
                 encoderHomeOffset = shoulder.getCurrentPosition();
             }
