@@ -58,7 +58,7 @@ public class RedStorageUnit extends LinearOpMode{
 
         waitForStart();
 
-        f2.driveToPoint(new Vector2(0,-400));
+        f2.driveToPoint(new Vector2(0,400));
         if(isStopRequested()){
             return;
         }
@@ -68,8 +68,7 @@ public class RedStorageUnit extends LinearOpMode{
             return;
         }
 
-
-        f2.driveToPoint(new Vector2(0, 500));
+        f2.driveToPoint(new Vector2(0, 300));
         if(isStopRequested()){
             return;
         }

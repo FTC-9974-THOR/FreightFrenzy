@@ -22,13 +22,18 @@ public class Elmer extends OpMode {
     CarouselSpinner cs;
 
     public enum PivotState{
-        AUTOMATIC,
-        MANUAL
+        HOLD,
+        MANUAL,
+        FORWARD,
+        RED_SHARED_HUB,
+        BLUE_SHARED_HUB,
+        BACKWARD
     }
 
     public enum UpDownState{
         HOLD,
         MANUAL,
+        DOWN,
         LOW,
         MIDDLE,
         HIGH
@@ -39,6 +44,8 @@ public class Elmer extends OpMode {
 
     private BooleanEdgeDetector controlModeSwitchDetector;
     private boolean controlModeSwitch;
+
+    private double pivotHoldPosition, upDownHoldPosition;
 
     private List<LynxModule> lynxModules;
 
@@ -65,7 +72,7 @@ public class Elmer extends OpMode {
             lynxModule.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
         }
 
-        //telemetry.addData("PIDF Coefficients:" ,arm.shoulder.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+
     }
 
     @Override
@@ -94,35 +101,57 @@ public class Elmer extends OpMode {
 
         //kathir mode
         if (controlModeSwitch) {
-            md.drive(gamepad1.right_stick_x, -gamepad1.right_stick_y, gamepad1.left_stick_x);
+            md.drive(-gamepad1.right_stick_x, -gamepad1.right_stick_y, -gamepad1.left_stick_x);
         } else {
-            md.drive(gamepad1.left_stick_x, -gamepad1.left_stick_y, gamepad1.right_stick_x);
+            md.drive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x);
         }
 
         if(gamepad1.left_bumper){
-            cs.spin(0.75);
+            cs.spin(300);
         } else if (gamepad1.right_bumper){
-            cs.spin(-0.75);
+            cs.spin(-300);
         } else{
             cs.spin(0);
         }
 
-        if (gamepad1.left_trigger > 0.3 || gamepad2.left_trigger > 0.3) {
-            turret.spinIntake(-400);
-        } else if (gamepad1.right_trigger > 0.3 || gamepad2.right_trigger > 0.3) {
+        //analog control for the intake, binary control for the outtake
+        if (gamepad1.left_trigger > 0.3){
+            turret.spinIntake(MathUtilities.map(gamepad1.left_trigger,0.3, 1,0,-300));//-250
+        } else if (gamepad2.left_trigger > 0.3) {
+            turret.spinIntake(MathUtilities.map(gamepad2.left_trigger,0.3,1,0,-300));//250
+        } else if(gamepad1.right_trigger > 0.3 || gamepad2.right_trigger > 0.3){
             turret.spinIntake(400);
-        } else {
+        } else{
             turret.spinIntake(0);
         }
-        if (turret.isUpDownHomed()){
-            if(gamepad2.dpad_up){
-                upDownState = UpDownState.LOW;
-            } else if(gamepad2.dpad_left){
-                upDownState = UpDownState.MIDDLE;
-            } else if (gamepad2.dpad_down){
-                upDownState = UpDownState.HIGH;
-            } else if (gamepad2.dpad_right){
 
+        if(turret.isUpDownHomed()){
+            if(gamepad2.y){
+                upDownState = UpDownState.HIGH;
+            } else if(gamepad2.b){
+                upDownState = UpDownState.LOW;
+            } else if(gamepad2.a){
+                upDownState = UpDownState.DOWN;
+            } else if(gamepad2.x){
+                upDownState = UpDownState.MIDDLE;
+            }
+
+            if(Math.abs(upDownInput) > 0.01){
+                upDownState = UpDownState.MANUAL;
+            }
+        }
+
+        if (turret.isPivotHomed()){
+            if (turret.getUpDownPosition() > 25) {
+                if(gamepad2.dpad_up){
+                    pivotState = PivotState.FORWARD;
+                } else if(gamepad2.dpad_left){
+                    pivotState = PivotState.BLUE_SHARED_HUB;
+                } else if (gamepad2.dpad_down){
+                    pivotState = PivotState.RED_SHARED_HUB;
+                } else if (gamepad2.dpad_right){
+                    pivotState = PivotState.BACKWARD;
+                }
             }
 
             if(Math.abs(upDownInput) > 0){
@@ -130,45 +159,98 @@ public class Elmer extends OpMode {
             }
         }
 
+
         switch(pivotState){
-            case AUTOMATIC:
+            case HOLD:
+
+                turret.setPivotTargetPosition(pivotHoldPosition);
+                turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setPivotPowerAutomatic(1);
+
+                if (Math.abs(pivotInput)> 0.01) {
+                    pivotState = pivotState.MANUAL;
+                }
+
                 break;
             case MANUAL:
+
+                turret.setPivotMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 turret.setPivotPowerManual(pivotInput);
+
+                if(Math.abs(pivotInput) < 0.01){
+                    pivotState = pivotState.HOLD;
+                    turret.setPivotTargetPosition(turret.getPivotPosition());
+                }
+
                 break;
-            default:
+            case FORWARD:
+                turret.setPivotTargetPosition(0);//degrees
+                turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setPivotPowerAutomatic(1);
+                break;
+            case RED_SHARED_HUB:
+                turret.setPivotTargetPosition(-97);//degrees
+                turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setPivotPowerAutomatic(1);
+                break;
+            case BLUE_SHARED_HUB:
+                turret.setPivotTargetPosition(97);//degrees
+                turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setPivotPowerAutomatic(1);
+            case BACKWARD:
+                turret.setPivotTargetPosition(Math.copySign(180, turret.getPivotPosition()));//degrees
+                turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setPivotPowerAutomatic(1);
+                break;
         }
 
         switch(upDownState){
             case HOLD:
-                if (upDownInput != 0) {
+
+                turret.setUpDownTargetPosition(upDownHoldPosition);
+                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setUpDownPowerAutomatic(0.7);
+
+                if (Math.abs(upDownInput) > 0.01){
                     upDownState = UpDownState.MANUAL;
                 }
+
                 break;
             case MANUAL:
-                if(upDownInput == 0){
+
+                if(Math.abs(upDownInput) < 0.01){
                     upDownState = UpDownState.HOLD;
+                    upDownHoldPosition = turret.getUpDownPosition();
                 }
-                turret.setPivotMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+                turret.setUpDownMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 turret.setUpDownPowerManual(upDownInput);
+
                 break;
+
             case LOW:
-                turret.setUpDownTargetPosition(40);//degrees
+                turret.setUpDownTargetPosition(27);//degrees
                 turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(0.5);
+                turret.setUpDownPowerAutomatic(1);
                 break;
             case MIDDLE:
+                turret.setUpDownTargetPosition(32);//degrees
                 turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setUpDownPowerAutomatic(0.5);
                 break;
             case HIGH:
+                turret.setUpDownTargetPosition(57);//degrees
                 turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setUpDownPowerAutomatic(0.5);
                 break;
-            default:
+            case DOWN:
+                turret.setUpDownTargetPosition(0);//degrees
+                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setUpDownPowerAutomatic(0.9);
         }
 
         turret.update();
+        cs.update();
 
         telemetry.addData("Pivot homed:" ,turret.isPivotHomed());
         telemetry.addData("Pivot position in degrees:", turret.getPivotPosition());
@@ -180,6 +262,13 @@ public class Elmer extends OpMode {
 
         telemetry.addData("Pivot State Machine", pivotState);
         telemetry.addData("Up/Down State Machine", upDownState);
+
+        telemetry.addData("UpDown Velocity in degrees", turret.getUpDownVelocity());
+        telemetry.addData("Pivot Input", pivotInput);
+        telemetry.addData("UpDown Input", upDownInput);
+
+        telemetry.addData("Carousel wheel speed", cs.getCurrentSpeed());
+
         telemetry.update();
     }
 

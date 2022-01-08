@@ -16,7 +16,7 @@ public class Turret{
 
     private double pivotHomeOffset, upDownHomeOffset;
 
-    public int pivotLowerLimit = -215, pivotUpperLimit = 215, upDownLowerLimit = -7, upDownUpperLimit = 70;
+    public int pivotLowerLimit = -215, pivotUpperLimit = 215, upDownLowerLimit = -7, upDownUpperLimit = 90;
 
     private BooleanEdgeDetector pivotBED, upDownBED;
 
@@ -33,7 +33,7 @@ public class Turret{
     //pivot positive edge in degrees: 10, 9.18, 9.09, 7.9, 8.46, 8.46, 8.73, 8.6 average as 8.8
     //pivot negative edge in degrees:
 
-    static final double pivotNegativeEdge = -9, pivotPositiveEdge = 8.8;//these need changed
+    static final double pivotNegativeEdge = -11, pivotPositiveEdge = 8.8;//these need changed
     static final double stop = 6;//this also needs changed
 
     public static final int[] HOME = {0,0};//pivot first, then upDown
@@ -56,6 +56,8 @@ public class Turret{
 
         pivotBED = new BooleanEdgeDetector(pivotHomingSensor.isPressed());
         upDownBED = new BooleanEdgeDetector(upDownHomingSensor.isPressed());
+
+        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public enum AngleUnit{
@@ -94,20 +96,22 @@ public class Turret{
     public void setPivotPowerManual(double power){
         if(pivotHomed){
             //Inner left
-            if(getPivotPosition() > 3 && getPivotPosition() < 33 + 1 && getUpDownPosition() < 25){
+            if(getPivotPosition() > 10 && getPivotPosition() < 33 + 1 && getUpDownPosition() < 25 && upDownHomed){
                 pivot.setPower(Math.min(power, 0));
             }
             //Outer left
-            else if(getPivotPosition() > 33 - 1 && getPivotPosition() < 60 && getUpDownPosition() < 25){
+            else if(getPivotPosition() > 33 - 1 && getPivotPosition() < 60 && getUpDownPosition() < 25 && upDownHomed){
                 pivot.setPower(Math.max(power,0));
             }
             //Inner right
-            else if(getPivotPosition() < -2 && getPivotPosition() > -26 - 1 && getUpDownPosition() < 25){
+            else if(getPivotPosition() < -2 && getPivotPosition() > -26 - 1 && getUpDownPosition() < 25 && upDownHomed){
                 pivot.setPower(Math.max(power,0));
             }
             //Outer right
-            else if(getPivotPosition() < -26 + 1 && getPivotPosition() > -58 && getUpDownPosition() < 25){
+            else if(getPivotPosition() < -26 + 1 && getPivotPosition() > -58 && getUpDownPosition() < 25 && upDownHomed){
                 pivot.setPower(Math.min(power,0));
+            } else if (getPivotPosition() < 10 && getPivotPosition() > -2 && getUpDownPosition() < 25 && upDownHomed){
+                pivot.setPower(0);
             } else if((getPivotPosition() < pivotLowerLimit)){
                 pivot.setPower(Math.max(power, 0));
             } else if((getPivotPosition() > pivotUpperLimit)){
@@ -116,7 +120,7 @@ public class Turret{
                 pivot.setPower(power);
             }
         } else {
-            pivot.setPower(power);
+            pivot.setPower(0.3 * power);
         }
     }
 
@@ -126,7 +130,11 @@ public class Turret{
     }
 
     public double getUpDownPosition(){
-        return (upDown.getCurrentPosition() - upDownHomeOffset)/ ticksPerDegreePivot;//returns degrees
+        return (upDown.getCurrentPosition() - upDownHomeOffset)/ ticksPerDegreeUpDown;//returns degrees
+    }
+
+    public double getUpDownVelocity(){   //returns degrees
+        return upDown.getVelocity()/ticksPerDegreeUpDown;
     }
 
     public void spinIntake(double velocity){
@@ -156,8 +164,8 @@ public class Turret{
         pivot.setTargetPosition(degreesToTicks(degrees));
     }
 
-    public void setUpDownTargetPosition(int position){
-        upDown.setTargetPosition(position);
+    public void setUpDownTargetPosition(double degrees){
+        upDown.setTargetPosition((int) (upDownHomeOffset + ticksPerDegreeUpDown * degrees));
     }
 
     public void calculatePivotOffset(double positionInDegrees){
@@ -174,18 +182,21 @@ public class Turret{
         if (upDownHomed) {
             //Left
             if(getPivotPosition() < -2 && getPivotPosition() > -50 && getUpDownPosition() < 25){
-                upDown.setPower(Math.max(power, 0));
+                power = Math.max(power, 0);
             }
             //Right
             else if(getPivotPosition() > 3 && getPivotPosition() < 55 && getUpDownPosition() < 25){
-                upDown.setPower(Math.max(power, 0));
+                power = Math.max(power, 0);
             } else if ((upDownHomingSensor.isPressed())) {
-                upDown.setPower(Math.max(power, 0));
+                power = Math.max(power, 0);
             } else if ((getUpDownPosition() > upDownUpperLimit)) {
-                upDown.setPower(Math.min(power, 0));
+                power = Math.min(power, 0);
             } else {
-                upDown.setPower(power);
+                //upDown.setPower(power);
             }
+
+            power += 0.5 * Math.cos(getUpDownPosition());
+            upDown.setPower(power);
         } else {
             upDown.setPower(power);
         }
@@ -193,7 +204,14 @@ public class Turret{
     }
 
     public void setUpDownPowerAutomatic(double power){
+        if(upDown.getTargetPosition() < upDown.getCurrentPosition()){
+            power *= 0.3;
+        }
         upDown.setPower(power);
+    }
+
+    public void setPivotPowerAutomatic(double power){
+        pivot.setPower(power);
     }
 
     public boolean isPivotHomed() {

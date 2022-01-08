@@ -11,6 +11,8 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
+import java.util.Vector;
+
 @Autonomous(name = "Red Duck Park", group = "autonomous")
 public class RedDuckPark extends LinearOpMode{
 
@@ -52,44 +54,43 @@ public class RedDuckPark extends LinearOpMode{
         if (isStopRequested()) return;
         //waitForStart();
 
-        md.setAxisInversion(false, false, false);
+        md.setAxisInversion(true, false, false);
         md.setEncoderInversion(true, true, true, true);
         navSource.setInverted(false);
 
         waitForStart();
-
-        f2.driveToPoint(new Vector2(150,0));
-        if(isStopRequested()){
-            return;
-        }
 
         f2.driveToPoint(new Vector2(0,80));
         if(isStopRequested()){
             return;
         }
 
-        cs.spin(-0.5);
+        f2.driveToPoint(new Vector2(-80,0));
+        if(isStopRequested()){
+            return;
+        }
 
-        sleep(5000);
+        cs.spin(-300);
+
+        sleep(3000);
 
         cs.spin(0);
 
-        f2.driveToPoint(new Vector2(350,0));//was 450,0
+        f2.driveToPoint(new Vector2(10, 0));
         if(isStopRequested()){
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,-1800));
+        f2.turnToHeading(Math.toRadians(-90));
         if(isStopRequested()){
             return;
         }
 
-        /*
-        f2.driveToPoint(new Vector2(0,900));//this was 0,-1350
-
+        f2.driveToPoint(new Vector2(0,1900));
         if(isStopRequested()){
             return;
-        }*/
+        }
+
     }
 }
 

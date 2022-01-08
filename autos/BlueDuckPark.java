@@ -61,12 +61,7 @@ public class BlueDuckPark extends LinearOpMode{
 
         waitForStart();
 
-        f2.turnToHeading(Math.toRadians(-55));
-        if(isStopRequested()){
-            return;
-        }
-
-        f2.driveToPoint(new Vector2(0,150));
+        f2.driveToPoint(new Vector2(0,-80));
         if(isStopRequested()){
             return;
         }
@@ -77,17 +72,7 @@ public class BlueDuckPark extends LinearOpMode{
 
         cs.spin(0);
 
-        f2.turnToHeading(Math.toRadians(0));
-        if(isStopRequested()){
-            return;
-        }
-
-        f2.driveToPoint(new Vector2(-250,0));
-        if(isStopRequested()){
-            return;
-        }
-
-        f2.driveToPoint(new Vector2(0,-1700));
+        f2.driveToPoint(new Vector2(0,1800));
         if(isStopRequested()){
             return;
         }
