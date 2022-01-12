@@ -12,7 +12,7 @@ import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
 @Autonomous(name = "Red Duck Park Storage Unit", group = "autonomous")
-public class RedDuckParkStorageUnit extends LinearOpMode{
+public class RedDuckParkStorageUnit extends LinearOpMode{//ACTUALLY BLUE
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -25,7 +25,7 @@ public class RedDuckParkStorageUnit extends LinearOpMode{
 
         md = new MecanumDrive(hardwareMap);
         calculator = new MecanumEncoderCalculator(21, 96);
-        navSource = new IMUNavSource(hardwareMap);
+        navSource = new IMUNavSource(hardwareMap, 2);
         f2 = new Fusion2(this, md, calculator, navSource,new PIDFCoefficients(0.8,0,0,0));
         cs = new CarouselSpinner(hardwareMap);
 
@@ -42,6 +42,8 @@ public class RedDuckParkStorageUnit extends LinearOpMode{
         //the speed at which the robot will crawl
         f2.setCrawlSpeed(0.4);
 
+        f2.setMinTurningSpeed(0.3);
+
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Front Left Position", md.frontLeft.getCurrentPosition());
             telemetry.addData("Front Right Position", md.frontRight.getCurrentPosition());
@@ -52,27 +54,21 @@ public class RedDuckParkStorageUnit extends LinearOpMode{
         if (isStopRequested()) return;
         //waitForStart();
 
-        md.setAxisInversion(false, false, false);
+        md.setAxisInversion(true, false, true);
         md.setEncoderInversion(true, true, true, true);
         navSource.setInverted(false);
-        /*f2.driveToPoint(new Vector2(-100,0), () -> {
-            telemetry.addData("Heading", navSource.getHeading());
-            telemetry.update();
-        });
 
-        if(isStopRequested()){
-                return;
-        }*/
-
-        f2.driveToPoint(new Vector2(150,0));
+        f2.driveToPoint(new Vector2(0,400));
         if(isStopRequested()){
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,80));
+        f2.turnToHeading(30);
         if(isStopRequested()){
             return;
         }
+
+        f2.driveToPoint(new Vector2(0,-300));
 
         cs.spin(-0.5);
 
@@ -80,17 +76,6 @@ public class RedDuckParkStorageUnit extends LinearOpMode{
 
         cs.spin(0);
 
-        f2.driveToPoint(new Vector2(400,0));
-        if(isStopRequested()){
-            return;
-        }
-
-        /*
-        f2.driveToPoint(new Vector2(0,900));//this was 0,-1350
-
-        if(isStopRequested()){
-            return;
-        }*/
     }
 }
 

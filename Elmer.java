@@ -101,15 +101,15 @@ public class Elmer extends OpMode {
 
         //kathir mode
         if (controlModeSwitch) {
-            md.drive(-gamepad1.right_stick_x, -gamepad1.right_stick_y, -gamepad1.left_stick_x);
+            md.drive(-gamepad1.right_stick_x, gamepad1.right_stick_y, -gamepad1.left_stick_x);
         } else {
-            md.drive(-gamepad1.left_stick_x, -gamepad1.left_stick_y, -gamepad1.right_stick_x);
+            md.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x);
         }
 
         if(gamepad1.left_bumper){
-            cs.spin(300);
+            cs.spin(0.75);
         } else if (gamepad1.right_bumper){
-            cs.spin(-300);
+            cs.spin(-0.75);
         } else{
             cs.spin(0);
         }
@@ -148,9 +148,9 @@ public class Elmer extends OpMode {
                 } else if(gamepad2.dpad_left){
                     pivotState = PivotState.BLUE_SHARED_HUB;
                 } else if (gamepad2.dpad_down){
-                    pivotState = PivotState.RED_SHARED_HUB;
-                } else if (gamepad2.dpad_right){
                     pivotState = PivotState.BACKWARD;
+                } else if (gamepad2.dpad_right){
+                    pivotState = PivotState.RED_SHARED_HUB;
                 }
             }
 
@@ -197,6 +197,7 @@ public class Elmer extends OpMode {
                 turret.setPivotTargetPosition(97);//degrees
                 turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setPivotPowerAutomatic(1);
+                break;
             case BACKWARD:
                 turret.setPivotTargetPosition(Math.copySign(180, turret.getPivotPosition()));//degrees
                 turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -247,10 +248,10 @@ public class Elmer extends OpMode {
                 turret.setUpDownTargetPosition(0);//degrees
                 turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setUpDownPowerAutomatic(0.9);
+                break;
         }
 
         turret.update();
-        cs.update();
 
         telemetry.addData("Pivot homed:" ,turret.isPivotHomed());
         telemetry.addData("Pivot position in degrees:", turret.getPivotPosition());
@@ -267,7 +268,6 @@ public class Elmer extends OpMode {
         telemetry.addData("Pivot Input", pivotInput);
         telemetry.addData("UpDown Input", upDownInput);
 
-        telemetry.addData("Carousel wheel speed", cs.getCurrentSpeed());
 
         telemetry.update();
     }

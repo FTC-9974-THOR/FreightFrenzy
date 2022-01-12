@@ -22,8 +22,8 @@ public class CarouselSpinner{
         speedRamp = new SpeedRamp(400);
     }
 
-    public void spin(double speed){
-        speedRamp.setSetpoint(speed);
+    public void spin(double power){
+        spinner.setPower(power);
     }
 
     public double getCurrentSpeed(){

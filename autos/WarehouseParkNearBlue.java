@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autos;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
@@ -9,9 +10,8 @@ import org.ftc9974.thorcore.control.navigation.Fusion2;
 import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
-
-@Autonomous(name = "Warehouse Park Near", group = "autonomous")
-public class WarehouseParkNear extends LinearOpMode {
+@Autonomous(name = "Warehouse Park Near Blue", group = "autonomous")
+public class WarehouseParkNearBlue extends LinearOpMode {
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -51,8 +51,18 @@ public class WarehouseParkNear extends LinearOpMode {
 
         waitForStart();
 
-        f2.driveToPoint(new Vector2(0, 550));
+        f2.driveToPoint(new Vector2(0, -650));
         if (isStopRequested()) {
+            return;
+        }
+
+        f2.driveToPoint(new Vector2(600, 0));
+        if(isStopRequested()){
+            return;
+        }
+
+        f2.driveToPoint(new Vector2(0, -400));
+        if(isStopRequested()){
             return;
         }
     }
