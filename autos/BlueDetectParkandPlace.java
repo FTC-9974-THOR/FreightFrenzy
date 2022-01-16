@@ -21,6 +21,7 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
+@Disabled
 @Autonomous(name = "Blue Detect Park and Place", group = "autonomous")
 public class BlueDetectParkandPlace extends LinearOpMode {
 

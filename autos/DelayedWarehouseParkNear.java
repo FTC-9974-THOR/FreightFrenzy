@@ -11,6 +11,7 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
+@Disabled
 @Autonomous(name = "Delayed Warehouse Park Near", group = "autonomous")
 public class DelayedWarehouseParkNear extends LinearOpMode {
 

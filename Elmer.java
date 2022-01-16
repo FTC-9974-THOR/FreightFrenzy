@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
+import org.firstinspires.ftc.teamcode.hardware.MiniArm;
 import org.firstinspires.ftc.teamcode.hardware.Turret;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
@@ -20,6 +21,7 @@ public class Elmer extends OpMode {
     MecanumDrive md;
     Turret turret;
     CarouselSpinner cs;
+    MiniArm miniArm;
 
     public enum PivotState{
         HOLD,
@@ -54,6 +56,7 @@ public class Elmer extends OpMode {
         md = new MecanumDrive(hardwareMap);
         turret = new Turret(hardwareMap);
         cs = new CarouselSpinner(hardwareMap);
+        miniArm = new MiniArm(hardwareMap);
 
         controlModeSwitch = false;
         controlModeSwitchDetector = new BooleanEdgeDetector(false);
@@ -124,6 +127,24 @@ public class Elmer extends OpMode {
         } else{
             turret.spinIntake(0);
         }
+
+        //******
+        if(gamepad1.dpad_up){
+            miniArm.fullyRetractLinServos();
+            miniArm.upTurn();
+        } else if(gamepad1.dpad_down){
+            miniArm.middleLinServos();
+            miniArm.straightDownTurn();
+            miniArm.openClaw();
+        }
+
+        if(gamepad1.b){
+            miniArm.openClaw();
+        } else if (gamepad1.a){
+            miniArm.closeClawTSE();
+        }
+
+        //******
 
         if(turret.isUpDownHomed()){
             if(gamepad2.y){
@@ -267,7 +288,6 @@ public class Elmer extends OpMode {
         telemetry.addData("UpDown Velocity in degrees", turret.getUpDownVelocity());
         telemetry.addData("Pivot Input", pivotInput);
         telemetry.addData("UpDown Input", upDownInput);
-
 
         telemetry.update();
     }

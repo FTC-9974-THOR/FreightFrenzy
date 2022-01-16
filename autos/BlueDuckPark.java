@@ -12,6 +12,7 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
+@Disabled
 @Autonomous(name = "Blue Duck Park", group = "autonomous")
 public class BlueDuckPark extends LinearOpMode{
 

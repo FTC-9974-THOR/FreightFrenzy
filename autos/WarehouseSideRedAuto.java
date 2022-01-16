@@ -15,7 +15,7 @@ import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
 @Autonomous(name = "Warehouse Side Red Auto", group = "autonomous")
-public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
+public class WarehouseSideRedAuto extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -55,6 +55,8 @@ public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
             telemetry.addData("Back Left Position", md.backLeft.getCurrentPosition());
             telemetry.addData("Back Right Position", md.backRight.getCurrentPosition());
             telemetry.addData("Number of Targets: ", f2.numTargets);
+            telemetry.addData("UpDown PID Coefficients:", turret.upDown.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
+            telemetry.addLine("STARTING POSITION: Eyes towards warehouse, side against wall, back wheels ~1 inch in front of teeth on tile closest to barrier");
             telemetry.update();
         }
         if (isStopRequested()) return;
@@ -64,18 +66,20 @@ public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
         md.setEncoderInversion(false, false, false, false);//all true
         navSource.setInverted(false);
 
+
+        //1. raise the arm
         turret.setUpDownTargetPosition(67);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.5);
         if(isStopRequested()){
             return;
         }
-
+        //2. drive to the alliance hub
         f2.driveToPoint(new Vector2(-1100, 0));
         if(isStopRequested()){
             return;
         }
-
+        //3. turn the arm around
         turret.setPivotTargetPosition(179);
         turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setPivotPowerAutomatic(0.9);
@@ -137,7 +141,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
             return;
         }
 
-        f2.driveToPoint(new Vector2(0, -900));
+        f2.driveToPoint(new Vector2(0, -1000));
         if(isStopRequested()){
             return;
         }
@@ -149,7 +153,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
             return;
         }
 
-        f2.driveToPoint(new Vector2(-1100, 0));
+        f2.driveToPoint(new Vector2(-1000, 0));
         if(isStopRequested()){
             return;
         }
@@ -184,7 +188,12 @@ public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
 
         sleep(1000);
 
-        f2.driveToPoint(new Vector2(1100, 0));
+        f2.driveToPoint(new Vector2(400, 0));
+        if(isStopRequested()){
+            return;
+        }
+
+        f2.driveToPoint(new Vector2(0, 800));
         if(isStopRequested()){
             return;
         }
@@ -197,11 +206,6 @@ public class WarehouseSideRedAuto extends LinearOpMode{//ACTUALLY BLUE
         }
 
         sleep(1500);
-
-        f2.driveToPoint(new Vector2(0, 800));
-        if(isStopRequested()){
-            return;
-        }
 
     }
 }

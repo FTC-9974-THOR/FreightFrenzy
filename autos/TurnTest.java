@@ -12,6 +12,7 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
+@Disabled
 @Autonomous(name = "Turn Test", group = "autonomous")
 public class TurnTest extends LinearOpMode{//ACTUALLY BLUE
 

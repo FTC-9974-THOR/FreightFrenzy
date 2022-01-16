@@ -14,6 +14,7 @@ import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
 import java.util.Vector;
 
+@Disabled
 @Autonomous(name = "Red Duck Park", group = "autonomous")
 public class RedDuckPark extends LinearOpMode{
 

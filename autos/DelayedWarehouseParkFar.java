@@ -10,6 +10,7 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
+@Disabled
 public class DelayedWarehouseParkFar extends LinearOpMode {
 
     private MecanumDrive md;
