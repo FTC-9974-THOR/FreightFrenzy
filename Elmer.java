@@ -38,7 +38,8 @@ public class Elmer extends OpMode {
         DOWN,
         LOW,
         MIDDLE,
-        HIGH
+        HIGH,
+        STRAIGHT_UP
     }
 
     PivotState pivotState;
@@ -132,6 +133,7 @@ public class Elmer extends OpMode {
         if(gamepad1.dpad_up){
             miniArm.fullyRetractLinServos();
             miniArm.upTurn();
+            upDownState = UpDownState.STRAIGHT_UP;
         } else if(gamepad1.dpad_down){
             miniArm.middleLinServos();
             miniArm.straightDownTurn();
@@ -257,6 +259,11 @@ public class Elmer extends OpMode {
                 break;
             case MIDDLE:
                 turret.setUpDownTargetPosition(32);//degrees
+                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
+                turret.setUpDownPowerAutomatic(0.5);
+                break;
+            case STRAIGHT_UP:
+                turret.setUpDownTargetPosition(90);//degrees
                 turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
                 turret.setUpDownPowerAutomatic(0.5);
                 break;

@@ -8,22 +8,23 @@ import org.ftc9974.thorcore.meta.Realizer;
 import org.ftc9974.thorcore.meta.annotation.Hardware;
 import org.ftc9974.thorcore.util.MathUtilities;
 
-//linear range: 1000 to 1800
-//claw and turn: 500 to 2500
+//linear range: 1000 to 1900
+//claw: 500 to 2500
+//turn: 885 to 2010
 public class MiniArm {
 
-    public static final double TURN_STOWED = MathUtilities.map(500, 500, 2500, 0, 1),
-            TURN_UP = MathUtilities.map(700, 500, 2500, 0, 1),
-            TURN_STRAIGHT_OUT = MathUtilities.map(1200, 500, 2500, 0,1),
-            TURN_DOWN = MathUtilities.map(2500, 500, 2500, 0, 1),
-            TURN_STRAIGHT_DOWN = MathUtilities.map(2500, 500, 2500, 0,1),
-            LIN_SERVO_RETRACTED = MathUtilities.map(1000, 1000, 1800, 0,1),
-            LIN_SERVO_LOWER_RETRACTED = MathUtilities.map(1200, 1000, 1800, 0,1),
-            LIN_SERVO_MIDDLE = MathUtilities.map(1600, 1000, 1800, 0,1),
-            LIN_SERVO_EXTENDED = MathUtilities.map(1800, 1000, 1800, 0,1),
-            CLAW_OPEN = MathUtilities.map(1270, 500, 2500, 0,1),
-            CLAW_CLOSED_BLOCK = MathUtilities.map(1800, 500, 2500, 0,1),
-            CLAW_CLOSED_TSE = MathUtilities.map(2200, 500, 2500, 0,1);
+    public static final double TURN_STOWED = MathUtilities.map(885, 885, 2010, 0, 1),
+            TURN_UP = MathUtilities.map(1370, 885, 2010, 0, 1),
+            TURN_STRAIGHT_OUT = MathUtilities.map(1200, 885, 2010, 0,1),
+            TURN_DOWN = MathUtilities.map(1312, 885, 2010, 0, 1),//not 1512!
+            TURN_STRAIGHT_DOWN = MathUtilities.map(2500, 885, 2010, 0,1),
+            LIN_SERVO_RETRACTED = MathUtilities.map(1000, 1000, 1900, 0,1),
+            LIN_SERVO_LOWER_RETRACTED = MathUtilities.map(1300, 1000, 1900, 0,1),
+            LIN_SERVO_MIDDLE = MathUtilities.map(1600, 1000, 1900, 0,1),
+            LIN_SERVO_EXTENDED = MathUtilities.map(1900, 1000, 1900, 0,1),
+            CLAW_OPEN = MathUtilities.map(800, 500, 2500, 0,1),
+            CLAW_CLOSED_BLOCK = MathUtilities.map(1350, 500, 2500, 0,1),
+            CLAW_CLOSED_TSE = MathUtilities.map(1550, 500, 2500, 0,1);
 
 
     @Hardware

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
 import org.ftc9974.thorcore.util.BooleanEdgeDetector;
 
+@Disabled
 @TeleOp(name = "Freight Frenzy", group = "Teleops")
 public class FreightFrenzy extends OpMode {
 
