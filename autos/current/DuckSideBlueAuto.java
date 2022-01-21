@@ -1,8 +1,9 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.current;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
@@ -13,8 +14,8 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
-@Autonomous(name = "Duck Side Red Auto", group = "autonomous")
-public class DuckSideRedAuto extends LinearOpMode{
+@Autonomous(name = "Duck Side Blue Auto", group = "autonomous")
+public class DuckSideBlueAuto extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -65,8 +66,7 @@ public class DuckSideRedAuto extends LinearOpMode{
         md.setEncoderInversion(false, false, false, false);//all true
         navSource.setInverted(false);
 
-        //1. raise the arm
-        turret.setUpDownTargetPosition(72);//high level
+        turret.setUpDownTargetPosition(67);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.5);
         if(isStopRequested()){
@@ -77,6 +77,15 @@ public class DuckSideRedAuto extends LinearOpMode{
         if(isStopRequested()){
             return;
         }
+        //3. turn the arm around
+        turret.setPivotTargetPosition(179);
+        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setPivotPowerAutomatic(0.9);
+        if(isStopRequested()){
+            return;
+        }
+
+        sleep(1000);
 
         turret.spinIntake(-300);
         if(isStopRequested()){
@@ -90,10 +99,14 @@ public class DuckSideRedAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,-800));
+        turret.setPivotTargetPosition(0);
+        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setPivotPowerAutomatic(0.9);
         if(isStopRequested()){
             return;
         }
+
+        sleep(1500);
 
         turret.setUpDownTargetPosition(0);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -104,28 +117,25 @@ public class DuckSideRedAuto extends LinearOpMode{
 
         sleep(1500);
 
-        f2.turnToHeading(Math.toRadians(90));
-        if(isStopRequested()){
-            return;
-        }
-
-        f2.driveToPoint(new Vector2(0, -750));
-        if(isStopRequested()){
-            return;
-        }
-
-        cs.spin(-0.75);
-
-        sleep(3000);
-
-        cs.spin(0);
-
-        f2.driveToPoint(new Vector2(200, 200));
+        f2.driveToPoint(new Vector2(1050, 0));
         if(isStopRequested()){
             return;
         }
 
         f2.turnToHeading(Math.toRadians(179));
+        if(isStopRequested()){
+            return;
+        }
+
+        f2.driveToPoint(new Vector2(0, -600));
+
+        cs.spinner.setPower(0.55);
+
+        sleep(3000);
+
+        cs.spinner.setPower(0);
+
+        f2.driveToPoint(new Vector2(0, 100));
         if(isStopRequested()){
             return;
         }
@@ -137,9 +147,20 @@ public class DuckSideRedAuto extends LinearOpMode{
             return;
         }
 
-        sleep(9000);
+        sleep(8000);
 
-        f2.driveToPoint(new Vector2(0, -2300));
+        f2.setCrawlSpeed(1);
+        f2.setCruiseSpeed(1);
+        f2.setCrawlSpeed(1);
+
+        f2.driveToPoint(new Vector2(0, 1000));
+        if(isStopRequested()){
+            return;
+        }
+
+        f2.turnToHeading(Math.toRadians(0));
+
+        f2.driveToPoint(new Vector2(0, -1000));
         if(isStopRequested()){
             return;
         }
@@ -154,6 +175,7 @@ public class DuckSideRedAuto extends LinearOpMode{
         sleep(1500);
     }
 }
+
 
 
 

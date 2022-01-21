@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -13,8 +13,8 @@ import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
 @Disabled
-@Autonomous(name = "Blue Duck Park", group = "autonomous")
-public class BlueDuckPark extends LinearOpMode{
+@Autonomous(name = "Turn Test", group = "autonomous")
+public class TurnTest extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -27,7 +27,7 @@ public class BlueDuckPark extends LinearOpMode{
 
         md = new MecanumDrive(hardwareMap);
         calculator = new MecanumEncoderCalculator(21, 96);
-        navSource = new IMUNavSource(hardwareMap);
+        navSource = new IMUNavSource(hardwareMap, 2);
         f2 = new Fusion2(this, md, calculator, navSource,new PIDFCoefficients(0.8,0,0,0));
         cs = new CarouselSpinner(hardwareMap);
 
@@ -44,7 +44,7 @@ public class BlueDuckPark extends LinearOpMode{
         //the speed at which the robot will crawl
         f2.setCrawlSpeed(0.4);
 
-        f2.setMinTurningSpeed(0.4);
+        f2.setMinTurningSpeed(0.3);
 
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Front Left Position", md.frontLeft.getCurrentPosition());
@@ -53,31 +53,18 @@ public class BlueDuckPark extends LinearOpMode{
             telemetry.addData("Back Right Position", md.backRight.getCurrentPosition());
             telemetry.update();
         }
-        if (isStopRequested()){
-            return;
-        }
+        if (isStopRequested()) return;
+        //waitForStart();
 
-        md.setAxisInversion(false, false, false);
+        md.setAxisInversion(true, false, true);
         md.setEncoderInversion(true, true, true, true);
         navSource.setInverted(false);
 
-        waitForStart();
-
-        f2.driveToPoint(new Vector2(0,-80));
+        f2.driveToPoint(new Vector2(-400, 0));
         if(isStopRequested()){
             return;
         }
 
-        cs.spin(0.5);
-
-        sleep(5000);
-
-        cs.spin(0);
-
-        f2.driveToPoint(new Vector2(0,1800));
-        if(isStopRequested()){
-            return;
-        }
     }
 }
 

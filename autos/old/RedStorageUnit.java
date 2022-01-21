@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -13,8 +13,8 @@ import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
 @Disabled
-@Autonomous(name = "Blue Duck Park Storage Unit", group = "autonomous")
-public class BlueDuckParkStorageUnit extends LinearOpMode{
+@Autonomous(name = "Red Storage Unit", group = "autonomous")
+public class RedStorageUnit extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -60,33 +60,22 @@ public class BlueDuckParkStorageUnit extends LinearOpMode{
 
         waitForStart();
 
-        f2.turnToHeading(Math.toRadians(-55));
+        f2.driveToPoint(new Vector2(0,400));
         if(isStopRequested()){
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,150));
+        f2.turnToHeading(Math.toRadians(-90));
         if(isStopRequested()){
             return;
         }
 
-        cs.spin(-0.5);
-
-        sleep(5000);
-
-        cs.spin(0);
-
-        f2.turnToHeading(Math.toRadians(0));
-        if(isStopRequested()){
-            return;
-        }
-
-
-        f2.driveToPoint(new Vector2(-300, 100));
+        f2.driveToPoint(new Vector2(0, 300));
         if(isStopRequested()){
             return;
         }
     }
 }
+
 
 

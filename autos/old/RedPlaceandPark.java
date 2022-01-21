@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -22,8 +22,8 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
 @Disabled
-@Autonomous(name = "Blue Detect Park and Place", group = "autonomous")
-public class BlueDetectParkandPlace extends LinearOpMode {
+@Autonomous(name = "Red Place and Park", group = "autonomous")
+public class RedPlaceandPark extends LinearOpMode {
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -93,13 +93,6 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
         f2.setMinTurningSpeed(0.4);
 
-        //arm.intake.setVelocityPIDFCoefficients(5);
-
-         /*double hMinimum = 30;
-        double hMaximum = 50;//this was 29
-
-        double sMinimum = 120;//this was 50
-        double sMaximum = 200;*/
 
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Front Left Position", md.frontLeft.getCurrentPosition());
@@ -121,6 +114,9 @@ public class BlueDetectParkandPlace extends LinearOpMode {
         waitForStart();
 
         et.reset();
+
+        telemetry.speak("Help me Obi-Wan Kenobi, you're my only hope.");
+        telemetry.update();
 
         TimingUtilities.blockUntil(this, pipeline::hasAnalysis, null, null);
         if (isStopRequested()) return;
@@ -163,34 +159,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 550));
-                if (isStopRequested()) {
-                    return;
-                }
-
-
-                f2.turnToHeading(Math.toRadians(30));
-                if(isStopRequested()){
-                    return;
-                }
-
-                f2.driveToPoint(new Vector2(0, 300));
-                if (isStopRequested()) {
-                    return;
-                }
-
-                cs.spin(0.5);
-
-                sleep(5000);
-
-                cs.spin(0);
-
-                f2.turnToHeading(Math.toRadians(90));
-                if(isStopRequested()){
-                    return;
-                }
-
-                f2.driveToPoint(new Vector2(0, -1700));
+                f2.driveToPoint(new Vector2(0, 1300));
                 if (isStopRequested()) {
                     return;
                 }
@@ -199,7 +168,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
             case CENTER:
 
-                f2.driveToPoint(new Vector2(0, -325));
+                f2.driveToPoint(new Vector2(0, -350));
                 if (isStopRequested()) {
                     return;
                 }
@@ -221,35 +190,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                 }
 
                 //drives to carousel
-                f2.driveToPoint(new Vector2(0, 650));
-                if (isStopRequested()) {
-                    return;
-                }
-
-                f2.turnToHeading(Math.toRadians(30));
-                if(isStopRequested()){
-                    return;
-                }
-
-                //drives into carousel
-                f2.driveToPoint(new Vector2(0, 300));//was -200,0
-                if (isStopRequested()) {
-                    return;
-                }
-
-
-                cs.spin(0.5);
-
-                sleep(5000);
-
-                cs.spin(0);
-
-                f2.turnToHeading(Math.toRadians(90));
-                if(isStopRequested()){
-                    return;
-                }
-
-                f2.driveToPoint(new Vector2(0, -1700));
+                f2.driveToPoint(new Vector2(0, 1300));
                 if (isStopRequested()) {
                     return;
                 }
@@ -258,7 +199,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
             case RIGHT:
 
-                f2.driveToPoint(new Vector2(0, -275));
+                f2.driveToPoint(new Vector2(0, -250));
                 if (isStopRequested()) {
                     return;
                 }
@@ -278,7 +219,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                arm.spinIntake(-350);
+                arm.spinIntake(-300);
 
                 sleep(3500);
 
@@ -299,33 +240,7 @@ public class BlueDetectParkandPlace extends LinearOpMode {
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 550));
-                if (isStopRequested()) {
-                    return;
-                }
-
-                f2.turnToHeading(Math.toRadians(30));
-                if(isStopRequested()){
-                    return;
-                }
-
-                f2.driveToPoint(new Vector2(0, 300));
-                if (isStopRequested()) {
-                    return;
-                }
-
-                cs.spin(0.5);
-
-                sleep(5000);
-
-                cs.spin(0);
-
-                f2.turnToHeading(Math.toRadians(90));
-                if(isStopRequested()){
-                    return;
-                }
-
-                f2.driveToPoint(new Vector2(0, -1700));
+                f2.driveToPoint(new Vector2(0, 1300));
                 if (isStopRequested()) {
                     return;
                 }

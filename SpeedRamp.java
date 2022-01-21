@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-public class SpeedRamp {
+public class SpeedRamp{
 
     private double setpoint, current, acceleration;
     private final ElapsedTime timer;

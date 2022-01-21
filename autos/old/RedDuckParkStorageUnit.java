@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -72,11 +72,11 @@ public class RedDuckParkStorageUnit extends LinearOpMode{//ACTUALLY BLUE
 
         f2.driveToPoint(new Vector2(0,-300));
 
-        cs.spin(-0.5);
+        //cs.spin(-0.5);
 
         sleep(5000);
 
-        cs.spin(0);
+        //cs.spin(0);
 
     }
 }

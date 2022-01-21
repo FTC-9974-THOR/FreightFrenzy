@@ -1,4 +1,5 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.current;
+
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -13,8 +14,8 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
-@Autonomous(name = "Duck Side Blue Auto", group = "autonomous")
-public class DuckSideBlueAuto extends LinearOpMode{
+@Autonomous(name = "Warehouse Side Red Auto", group = "autonomous")
+public class WarehouseSideRedAuto extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -55,7 +56,7 @@ public class DuckSideBlueAuto extends LinearOpMode{
             telemetry.addData("Back Right Position", md.backRight.getCurrentPosition());
             telemetry.addData("Number of Targets: ", f2.numTargets);
             telemetry.addData("UpDown PID Coefficients:", turret.upDown.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
-            telemetry.addLine("STARTING POSITION: eyes towards warehouse, side against wall, back of front wheels on teeth between second and third tiles");
+            telemetry.addLine("STARTING POSITION: Eyes towards warehouse, side against wall, back wheels ~1 inch in front of teeth on tile closest to barrier");
             telemetry.update();
         }
         if (isStopRequested()) return;
@@ -65,18 +66,28 @@ public class DuckSideBlueAuto extends LinearOpMode{
         md.setEncoderInversion(false, false, false, false);//all true
         navSource.setInverted(false);
 
+
         //1. raise the arm
-        turret.setUpDownTargetPosition(72);//high level
+        turret.setUpDownTargetPosition(67);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.5);
         if(isStopRequested()){
             return;
         }
         //2. drive to the alliance hub
-        f2.driveToPoint(new Vector2(1100, 0));
+        f2.driveToPoint(new Vector2(-1000, 0));
         if(isStopRequested()){
             return;
         }
+        //3. turn the arm around
+        turret.setPivotTargetPosition(179);
+        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setPivotPowerAutomatic(0.9);
+        if(isStopRequested()){
+            return;
+        }
+
+        sleep(1000);
 
         turret.spinIntake(-300);
         if(isStopRequested()){
@@ -90,71 +101,127 @@ public class DuckSideBlueAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,-800));
+        turret.setPivotTargetPosition(0);
+        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setPivotPowerAutomatic(0.9);
         if(isStopRequested()){
             return;
         }
 
-        turret.setUpDownTargetPosition(0);//high level
+        sleep(1000);
+
+        f2.driveToPoint(new Vector2(1100, 0));
+        if(isStopRequested()){
+            return;
+        }
+
+        turret.spinIntake(300);
+        if(isStopRequested()){
+            return;
+        }
+
+        turret.setUpDownTargetPosition(0);
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setUpDownPowerAutomatic(0.5);
+        turret.setUpDownPowerAutomatic(0.7);
         if(isStopRequested()){
             return;
         }
 
         sleep(1500);
 
-        f2.turnToHeading(Math.toRadians(-90));
+        f2.driveToPoint(new Vector2(0, 900));
         if(isStopRequested()){
             return;
         }
 
-        f2.driveToPoint(new Vector2(0, -750));
+        sleep(1000);
+
+        turret.spinIntake(0);
         if(isStopRequested()){
             return;
         }
 
-        cs.spin(0.75);
-
-        sleep(3000);
-
-        cs.spin(0);
-
-        f2.driveToPoint(new Vector2(-200, 200));
+        f2.driveToPoint(new Vector2(0, -1000));
         if(isStopRequested()){
             return;
         }
 
-        f2.turnToHeading(Math.toRadians(-179));
-        if(isStopRequested()){
-            return;
-        }
-
-        turret.setUpDownTargetPosition(32);//high level
+        turret.setUpDownTargetPosition(67);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setUpDownPowerAutomatic(0.5);
+        turret.setUpDownPowerAutomatic(0.9);
         if(isStopRequested()){
             return;
         }
 
-        sleep(9000);
-
-        f2.driveToPoint(new Vector2(0, -2300));
+        f2.driveToPoint(new Vector2(-1000, 0));
         if(isStopRequested()){
             return;
         }
 
-        turret.setUpDownTargetPosition(0);//high level
-        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setUpDownPowerAutomatic(0.5);
+        turret.setPivotTargetPosition(179);
+        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setPivotPowerAutomatic(0.9);
         if(isStopRequested()){
             return;
         }
 
         sleep(1500);
+
+        turret.spinIntake(-300);
+        if(isStopRequested()){
+            return;
+        }
+
+        sleep(2000);
+
+        turret.spinIntake(0);
+        if(isStopRequested()){
+            return;
+        }
+
+        turret.setPivotTargetPosition(0);
+        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setPivotPowerAutomatic(0.9);
+        if(isStopRequested()){
+            return;
+        }
+
+        sleep(1000);
+
+        f2.driveToPoint(new Vector2(400, 0));
+        if(isStopRequested()){
+            return;
+        }
+
+        turret.setUpDownTargetPosition(32);//middle
+        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setUpDownPowerAutomatic(0.7);
+        if(isStopRequested()){
+            return;
+        }
+
+        sleep(1000);
+
+        f2.setStartSpeed(1);
+        f2.setCruiseSpeed(1);
+        f2.setCrawlSpeed(1);
+
+        f2.driveToPoint(new Vector2(0, 900));
+        if(isStopRequested()){
+            return;
+        }
+
+        turret.setUpDownTargetPosition(0);
+        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setUpDownPowerAutomatic(0.7);
+        if(isStopRequested()){
+            return;
+        }
+
+        sleep(1500);
+
     }
 }
-
 
 
 

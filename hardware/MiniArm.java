@@ -83,7 +83,6 @@ public class MiniArm {
         setLinServoPosition(LIN_SERVO_MIDDLE);
     }
 
-
     public void stowTurn(){
         setTurnPosition(TURN_STOWED);
     }

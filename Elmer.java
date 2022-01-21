@@ -4,6 +4,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
 import org.firstinspires.ftc.teamcode.hardware.MiniArm;
@@ -110,13 +111,22 @@ public class Elmer extends OpMode {
             md.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x);
         }
 
-        if(gamepad1.left_bumper){
-            cs.spin(0.75);
+        /*if(gamepad1.left_bumper){
+            cs.spin(250);
         } else if (gamepad1.right_bumper){
-            cs.spin(-0.75);
+            cs.spin(-250);
         } else{
             cs.spin(0);
+        }*/
+
+        if(gamepad1.left_bumper){
+            cs.spin(DcMotorSimple.Direction.FORWARD);
+        } else if (gamepad1.right_bumper){
+            cs.spin(DcMotorSimple.Direction.REVERSE);
+        } else {
+            cs.stop();
         }
+
 
         //analog control for the intake, binary control for the outtake
         if (gamepad1.left_trigger > 0.3){
@@ -129,7 +139,7 @@ public class Elmer extends OpMode {
             turret.spinIntake(0);
         }
 
-        //******
+        /*
         if(gamepad1.dpad_up){
             miniArm.fullyRetractLinServos();
             miniArm.upTurn();
@@ -146,7 +156,7 @@ public class Elmer extends OpMode {
             miniArm.closeClawTSE();
         }
 
-        //******
+        */
 
         if(turret.isUpDownHomed()){
             if(gamepad2.y){
@@ -159,7 +169,7 @@ public class Elmer extends OpMode {
                 upDownState = UpDownState.MIDDLE;
             }
 
-            if(Math.abs(upDownInput) > 0.01){
+            if(Math.abs(upDownInput) > 0.01){//0.01
                 upDownState = UpDownState.MANUAL;
             }
         }
@@ -177,8 +187,8 @@ public class Elmer extends OpMode {
                 }
             }
 
-            if(Math.abs(upDownInput) > 0){
-                upDownState = UpDownState.MANUAL;
+            if(Math.abs(pivotInput) > 0){
+                pivotState = PivotState.MANUAL;
             }
         }
 
@@ -280,6 +290,7 @@ public class Elmer extends OpMode {
         }
 
         turret.update();
+        cs.update();
 
         telemetry.addData("Pivot homed:" ,turret.isPivotHomed());
         telemetry.addData("Pivot position in degrees:", turret.getPivotPosition());

@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.autos;
+package org.firstinspires.ftc.teamcode.autos.current;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
@@ -14,8 +15,8 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
-@Autonomous(name = "Warehouse Side Red Auto", group = "autonomous")
-public class WarehouseSideRedAuto extends LinearOpMode{
+@Autonomous(name = "Warehouse Side Blue Auto", group = "autonomous")
+public class WarehouseSideBlueAuto extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -24,15 +25,20 @@ public class WarehouseSideRedAuto extends LinearOpMode{
     private CarouselSpinner cs;
     private Turret turret;
 
+    public PIDFCoefficients pidfCoefficients;
+
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
 
         md = new MecanumDrive(hardwareMap);
         calculator = new MecanumEncoderCalculator(21, 96);
         navSource = new IMUNavSource(hardwareMap, 2);
-        f2 = new Fusion2(this, md, calculator, navSource,new PIDFCoefficients(0.8,0,0,0));
+        f2 = new Fusion2(this, md, calculator, navSource, new PIDFCoefficients(0.8, 0, 0, 0));
         cs = new CarouselSpinner(hardwareMap);
         turret = new Turret(hardwareMap);
+
+        pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
+        turret.upDown.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidfCoefficients);
 
         //the speed the robot will start moving at
         f2.setStartSpeed(0.7);
@@ -66,147 +72,157 @@ public class WarehouseSideRedAuto extends LinearOpMode{
         md.setEncoderInversion(false, false, false, false);//all true
         navSource.setInverted(false);
 
-
-        //1. raise the arm
         turret.setUpDownTargetPosition(67);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.5);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
-        //2. drive to the alliance hub
-        f2.driveToPoint(new Vector2(-1100, 0));
-        if(isStopRequested()){
+
+        f2.driveToPoint(new Vector2(1100, 0));
+        if (isStopRequested()) {
             return;
         }
-        //3. turn the arm around
-        turret.setPivotTargetPosition(179);
+
+        turret.setPivotTargetPosition(-179);
         turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setPivotPowerAutomatic(0.9);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1000);
 
         turret.spinIntake(-300);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(2000);
 
         turret.spinIntake(0);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         turret.setPivotTargetPosition(0);
         turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setPivotPowerAutomatic(0.9);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1000);
 
-        f2.driveToPoint(new Vector2(1100, 0));
-        if(isStopRequested()){
+        f2.driveToPoint(new Vector2(-1100, 0));
+        if (isStopRequested()) {
             return;
         }
 
         turret.spinIntake(300);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         turret.setUpDownTargetPosition(0);
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.7);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1500);
 
         f2.driveToPoint(new Vector2(0, 900));
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1000);
 
         turret.spinIntake(0);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         f2.driveToPoint(new Vector2(0, -1000));
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         turret.setUpDownTargetPosition(67);//high level
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.9);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
-        f2.driveToPoint(new Vector2(-1000, 0));
-        if(isStopRequested()){
+        f2.driveToPoint(new Vector2(1100, 0));
+        if (isStopRequested()) {
             return;
         }
 
-        turret.setPivotTargetPosition(179);
+        turret.setPivotTargetPosition(-179);
         turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setPivotPowerAutomatic(0.9);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1500);
 
         turret.spinIntake(-300);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(2000);
 
         turret.spinIntake(0);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         turret.setPivotTargetPosition(0);
         turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setPivotPowerAutomatic(0.9);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1000);
 
-        f2.driveToPoint(new Vector2(400, 0));
-        if(isStopRequested()){
+        f2.driveToPoint(new Vector2(-500, 0));
+        if (isStopRequested()) {
             return;
         }
 
-        f2.driveToPoint(new Vector2(0, 800));
-        if(isStopRequested()){
+        turret.setUpDownTargetPosition(32);//middle
+        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
+        turret.setUpDownPowerAutomatic(0.7);
+        if (isStopRequested()) {
+            return;
+        }
+
+        sleep(1000);
+
+        f2.setStartSpeed(1);
+        f2.setCruiseSpeed(1);
+        f2.setCrawlSpeed(1);
+
+        f2.driveToPoint(new Vector2(0, 900));
+        if (isStopRequested()) {
             return;
         }
 
         turret.setUpDownTargetPosition(0);
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.7);
-        if(isStopRequested()){
+        if (isStopRequested()) {
             return;
         }
 
         sleep(1500);
-
     }
 }
 
