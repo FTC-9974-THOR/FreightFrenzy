@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
+import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Turret;
 import org.ftc9974.thorcore.control.math.Vector2;
 import org.ftc9974.thorcore.control.navigation.Fusion2;
@@ -23,6 +24,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
     private Fusion2 f2;
     private CarouselSpinner cs;
     private Turret turret;
+    private Intake intake;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -33,6 +35,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
         f2 = new Fusion2(this, md, calculator, navSource,new PIDFCoefficients(0.8,0,0,0));
         cs = new CarouselSpinner(hardwareMap);
         turret = new Turret(hardwareMap);
+        intake = new Intake(hardwareMap);
 
         //the speed the robot will start moving at
         f2.setStartSpeed(0.7);
@@ -75,7 +78,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
             return;
         }
         //2. drive to the alliance hub
-        f2.driveToPoint(new Vector2(-1000, 0));
+        f2.driveToPoint(new Vector2(-1100, 0));
         if(isStopRequested()){
             return;
         }
@@ -89,14 +92,14 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1000);
 
-        turret.spinIntake(-300);
+        intake.spinIntake(-300);
         if(isStopRequested()){
             return;
         }
 
         sleep(2000);
 
-        turret.spinIntake(0);
+        intake.spinIntake(0);
         if(isStopRequested()){
             return;
         }
@@ -110,12 +113,12 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1000);
 
-        f2.driveToPoint(new Vector2(1100, 0));
+        f2.driveToPoint(new Vector2(1200, 0));
         if(isStopRequested()){
             return;
         }
 
-        turret.spinIntake(300);
+        intake.spinIntake(300);
         if(isStopRequested()){
             return;
         }
@@ -136,7 +139,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1000);
 
-        turret.spinIntake(0);
+        intake.spinIntake(0);
         if(isStopRequested()){
             return;
         }
@@ -153,7 +156,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(-1000, 0));
+        f2.driveToPoint(new Vector2(-900, 0));//was -1000
         if(isStopRequested()){
             return;
         }
@@ -167,14 +170,14 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1500);
 
-        turret.spinIntake(-300);
+        intake.spinIntake(-300);
         if(isStopRequested()){
             return;
         }
 
         sleep(2000);
 
-        turret.spinIntake(0);
+        intake.spinIntake(0);
         if(isStopRequested()){
             return;
         }
@@ -188,7 +191,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1000);
 
-        f2.driveToPoint(new Vector2(400, 0));
+        f2.driveToPoint(new Vector2(500, 0));
         if(isStopRequested()){
             return;
         }
@@ -206,7 +209,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
         f2.setCruiseSpeed(1);
         f2.setCrawlSpeed(1);
 
-        f2.driveToPoint(new Vector2(0, 900));
+        f2.driveToPoint(new Vector2(0, 750));
         if(isStopRequested()){
             return;
         }

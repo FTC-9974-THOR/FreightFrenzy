@@ -8,7 +8,8 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.RedVisionPipeline;
+import org.firstinspires.ftc.teamcode.VisionPipeline;
+import org.firstinspires.ftc.teamcode.VisionPipeline;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
 import org.ftc9974.thorcore.control.math.Vector2;
@@ -21,7 +22,6 @@ import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 
-@Disabled
 @Autonomous(name = "Blue Detect Park and Place", group = "autonomous")
 public class BlueDetectParkandPlace extends LinearOpMode {
 
@@ -35,8 +35,8 @@ public class BlueDetectParkandPlace extends LinearOpMode {
     private Arm arm;
     private CarouselSpinner cs;
 
-    RedVisionPipeline pipeline;
-    RedVisionPipeline.DuckPosition position;
+    VisionPipeline pipeline;
+    VisionPipeline.DuckPosition position;
 
     ElapsedTime et;
 
@@ -61,11 +61,12 @@ public class BlueDetectParkandPlace extends LinearOpMode {
 
             @Override
             public void onError(int errorCode) {
-                return;
+                
             }
+
         });
 
-        pipeline = new RedVisionPipeline();
+        pipeline = new VisionPipeline();
         webcam.setPipeline(pipeline);
 
         md = new MecanumDrive(hardwareMap);

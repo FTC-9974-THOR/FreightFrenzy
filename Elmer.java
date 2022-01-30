@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
+import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.MiniArm;
 import org.firstinspires.ftc.teamcode.hardware.Turret;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
@@ -23,6 +24,7 @@ public class Elmer extends OpMode {
     Turret turret;
     CarouselSpinner cs;
     MiniArm miniArm;
+    Intake intake;
 
     public enum PivotState{
         HOLD,
@@ -59,6 +61,7 @@ public class Elmer extends OpMode {
         turret = new Turret(hardwareMap);
         cs = new CarouselSpinner(hardwareMap);
         miniArm = new MiniArm(hardwareMap);
+        intake = new Intake(hardwareMap);
 
         controlModeSwitch = false;
         controlModeSwitchDetector = new BooleanEdgeDetector(false);
@@ -111,13 +114,6 @@ public class Elmer extends OpMode {
             md.drive(-gamepad1.left_stick_x, gamepad1.left_stick_y, -gamepad1.right_stick_x);
         }
 
-        /*if(gamepad1.left_bumper){
-            cs.spin(250);
-        } else if (gamepad1.right_bumper){
-            cs.spin(-250);
-        } else{
-            cs.spin(0);
-        }*/
 
         if(gamepad1.left_bumper){
             cs.spin(DcMotorSimple.Direction.FORWARD);
@@ -130,13 +126,20 @@ public class Elmer extends OpMode {
 
         //analog control for the intake, binary control for the outtake
         if (gamepad1.left_trigger > 0.3){
-            turret.spinIntake(MathUtilities.map(gamepad1.left_trigger,0.3, 1,0,-300));//-250
+            intake.spinIntake(MathUtilities.map(gamepad1.left_trigger,0.3, 1,0,-300));//-250
         } else if (gamepad2.left_trigger > 0.3) {
-            turret.spinIntake(MathUtilities.map(gamepad2.left_trigger,0.3,1,0,-300));//250
+            intake.spinIntake(MathUtilities.map(gamepad2.left_trigger,0.3,1,0,-300));//250
         } else if(gamepad1.right_trigger > 0.3 || gamepad2.right_trigger > 0.3){
-            turret.spinIntake(400);
+            intake.spinIntake(400);
         } else{
-            turret.spinIntake(0);
+            intake.spinIntake(0);
+        }
+
+        //NEW 1/25/2022
+        if(gamepad2.left_bumper){
+            intake.openDoor();
+        } else if(gamepad2.right_bumper){
+            intake.closeDoor();
         }
 
         /*
@@ -207,13 +210,14 @@ public class Elmer extends OpMode {
                 break;
             case MANUAL:
 
-                turret.setPivotMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                turret.setPivotPowerManual(pivotInput);
-
                 if(Math.abs(pivotInput) < 0.01){
                     pivotState = pivotState.HOLD;
                     turret.setPivotTargetPosition(turret.getPivotPosition());
                 }
+
+                //1/21/2022 I switched the order of the if statement and the two lines below
+                turret.setPivotMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                turret.setPivotPowerManual(pivotInput);
 
                 break;
             case FORWARD:
@@ -321,4 +325,3 @@ public class Elmer extends OpMode {
         }
     }
 }
-

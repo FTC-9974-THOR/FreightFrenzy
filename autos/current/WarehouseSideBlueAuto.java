@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
+import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Turret;
 import org.ftc9974.thorcore.control.math.Vector2;
 import org.ftc9974.thorcore.control.navigation.Fusion2;
@@ -24,6 +25,7 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
     private Fusion2 f2;
     private CarouselSpinner cs;
     private Turret turret;
+    private Intake intake;
 
     public PIDFCoefficients pidfCoefficients;
 
@@ -36,6 +38,7 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
         f2 = new Fusion2(this, md, calculator, navSource, new PIDFCoefficients(0.8, 0, 0, 0));
         cs = new CarouselSpinner(hardwareMap);
         turret = new Turret(hardwareMap);
+        intake = new Intake(hardwareMap);
 
         pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
         turret.upDown.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidfCoefficients);
@@ -79,7 +82,7 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(1100, 0));
+        f2.driveToPoint(new Vector2(1200, 0));
         if (isStopRequested()) {
             return;
         }
@@ -93,14 +96,14 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
 
         sleep(1000);
 
-        turret.spinIntake(-300);
+        intake.spinIntake(-300);
         if (isStopRequested()) {
             return;
         }
 
         sleep(2000);
 
-        turret.spinIntake(0);
+        intake.spinIntake(0);
         if (isStopRequested()) {
             return;
         }
@@ -114,12 +117,12 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
 
         sleep(1000);
 
-        f2.driveToPoint(new Vector2(-1100, 0));
+        f2.driveToPoint(new Vector2(-1200, 0));
         if (isStopRequested()) {
             return;
         }
 
-        turret.spinIntake(300);
+        intake.spinIntake(300);
         if (isStopRequested()) {
             return;
         }
@@ -140,7 +143,7 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
 
         sleep(1000);
 
-        turret.spinIntake(0);
+        intake.spinIntake(0);
         if (isStopRequested()) {
             return;
         }
@@ -171,14 +174,14 @@ public class WarehouseSideBlueAuto extends LinearOpMode{
 
         sleep(1500);
 
-        turret.spinIntake(-300);
+        intake.spinIntake(-300);
         if (isStopRequested()) {
             return;
         }
 
         sleep(2000);
 
-        turret.spinIntake(0);
+        intake.spinIntake(0);
         if (isStopRequested()) {
             return;
         }

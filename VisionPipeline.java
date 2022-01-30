@@ -11,7 +11,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public class RedVisionPipeline extends OpenCvPipeline {
+public class VisionPipeline extends OpenCvPipeline {
 
     private static final String TAG = "FFDetectionPipeline";
 
@@ -57,7 +57,7 @@ public class RedVisionPipeline extends OpenCvPipeline {
     // it thread safe.
     private final AtomicBoolean hasCompletedAnalysis;
 
-    public RedVisionPipeline() {
+    public VisionPipeline() {
         // initialize hasCompletedAnalysis
         hasCompletedAnalysis = new AtomicBoolean(false);
     }

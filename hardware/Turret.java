@@ -24,7 +24,7 @@ public class Turret{
     public TouchSensor pivotHomingSensor, upDownHomingSensor;
 
     @Hardware
-    public DcMotorEx pivot, upDown, intake;
+    public DcMotorEx pivot, upDown;
 
     boolean encoderInversion, motorInversion;
     double ret;
@@ -57,7 +57,6 @@ public class Turret{
         pivotBED = new BooleanEdgeDetector(pivotHomingSensor.isPressed());
         upDownBED = new BooleanEdgeDetector(upDownHomingSensor.isPressed());
 
-        intake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     public enum AngleUnit{
@@ -135,10 +134,6 @@ public class Turret{
 
     public double getUpDownVelocity(){   //returns degrees
         return upDown.getVelocity()/ticksPerDegreeUpDown;
-    }
-
-    public void spinIntake(double velocity){
-        intake.setVelocity(velocity);
     }
 
     public void setTargetPosition(int [] positions, double pivotPower, double upDownPower){

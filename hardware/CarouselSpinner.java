@@ -12,6 +12,7 @@ import org.ftc9974.thorcore.meta.annotation.Hardware;
 
 public class CarouselSpinner{
 
+
     @Hardware
     public DcMotorEx spinner;
 
@@ -43,6 +44,8 @@ public class CarouselSpinner{
     }
 
     public void update(){
+
+        //diameter of wheel is 96 mm, 20:1 gear ratio, diameter of carousel is 15 inches = 381mm
         double angularVelocity = (spinner.getVelocity(AngleUnit.RADIANS) * 96)/(20 * 381);
 
         double maxAngularAccelerationCarousel = Math.sqrt((Math.pow(linearAcceleration, 2)/Math.pow(radius,2)) - Math.pow(angularVelocity, 4));

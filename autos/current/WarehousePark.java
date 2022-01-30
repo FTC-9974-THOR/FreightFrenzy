@@ -1,13 +1,12 @@
 package org.firstinspires.ftc.teamcode.autos.current;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
-import org.firstinspires.ftc.teamcode.hardware.Intake;
 import org.firstinspires.ftc.teamcode.hardware.Turret;
 import org.ftc9974.thorcore.control.math.Vector2;
 import org.ftc9974.thorcore.control.navigation.Fusion2;
@@ -15,8 +14,8 @@ import org.ftc9974.thorcore.control.navigation.IMUNavSource;
 import org.ftc9974.thorcore.control.navigation.MecanumEncoderCalculator;
 import org.ftc9974.thorcore.robot.drivetrains.MecanumDrive;
 
-@Autonomous(name = "Duck Side Red Auto", group = "autonomous")
-public class DuckSideRedAuto extends LinearOpMode{
+@Autonomous(name = "Warehouse Park", group = "autonomous")
+public class WarehousePark extends LinearOpMode{
 
     private MecanumDrive md;
     private MecanumEncoderCalculator calculator;
@@ -24,18 +23,21 @@ public class DuckSideRedAuto extends LinearOpMode{
     private Fusion2 f2;
     private CarouselSpinner cs;
     private Turret turret;
-    private Intake intake;
+
+    public PIDFCoefficients pidfCoefficients;
 
     @Override
-    public void runOpMode() throws InterruptedException{
+    public void runOpMode() throws InterruptedException {
 
         md = new MecanumDrive(hardwareMap);
         calculator = new MecanumEncoderCalculator(21, 96);
         navSource = new IMUNavSource(hardwareMap, 2);
-        f2 = new Fusion2(this, md, calculator, navSource,new PIDFCoefficients(0.8,0,0,0));
+        f2 = new Fusion2(this, md, calculator, navSource, new PIDFCoefficients(0.8, 0, 0, 0));
         cs = new CarouselSpinner(hardwareMap);
         turret = new Turret(hardwareMap);
-        intake = new Intake(hardwareMap);
+
+        pidfCoefficients = new PIDFCoefficients(10, 0, 0, 0);
+        turret.upDown.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, pidfCoefficients);
 
         //the speed the robot will start moving at
         f2.setStartSpeed(0.7);
@@ -59,7 +61,6 @@ public class DuckSideRedAuto extends LinearOpMode{
             telemetry.addData("Back Right Position", md.backRight.getCurrentPosition());
             telemetry.addData("Number of Targets: ", f2.numTargets);
             telemetry.addData("UpDown PID Coefficients:", turret.upDown.getPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION));
-            telemetry.addLine("STARTING POSITION: eyes AWAY FROM warehouse, side against wall, back wheels three inches in front of teeth");
             telemetry.update();
         }
         if (isStopRequested()) return;
@@ -69,91 +70,12 @@ public class DuckSideRedAuto extends LinearOpMode{
         md.setEncoderInversion(false, false, false, false);//all true
         navSource.setInverted(false);
 
-        turret.setUpDownTargetPosition(67);//high level
-        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setUpDownPowerAutomatic(0.5);
+        f2.driveToPoint(new Vector2(0, -700));
         if(isStopRequested()){
             return;
         }
-        //2. drive to the alliance hub
-        f2.driveToPoint(new Vector2(1100, 0));
-        if(isStopRequested()){
-            return;
-        }
-        //3. turn the arm around
-        turret.setPivotTargetPosition(-179);
-        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setPivotPowerAutomatic(0.9);
-        if(isStopRequested()){
-            return;
-        }
-
-        sleep(1000);
-
-        intake.spinIntake(-300);
-        if(isStopRequested()){
-            return;
-        }
-
-        sleep(2000);
-
-        intake.spinIntake(0);
-        if(isStopRequested()){
-            return;
-        }
-
-        turret.setPivotTargetPosition(0);
-        turret.setPivotMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setPivotPowerAutomatic(0.9);
-        if(isStopRequested()){
-            return;
-        }
-
-        sleep(2000);
-
-        turret.setUpDownTargetPosition(0);//high level
-        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setUpDownPowerAutomatic(0.5);
-        if(isStopRequested()){
-            return;
-        }
-
-        sleep(1500);
-
-
-        f2.turnToHeading(Math.toRadians(-90));
-        if(isStopRequested()){
-            return;
-        }
-
-        f2.driveToPoint(new Vector2(-1000, 0));
-        if(isStopRequested()){
-            return;
-        }
-
-        f2.driveToPoint(new Vector2(0,-800));
-        if(isStopRequested()){
-            return;
-        }
-
-        cs.spinner.setPower(-0.55);
-
-        sleep(3000);
-
-        cs.spinner.setPower(0);
-
-        f2.driveToPoint(new Vector2(0, 400));
-        if(isStopRequested()){
-            return;
-        }
-
-        turret.setUpDownTargetPosition(0);//high level
-        turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-        turret.setUpDownPowerAutomatic(0.5);
-        if(isStopRequested()){
-            return;
-        }
-
-        sleep(2000);
     }
 }
+
+
+

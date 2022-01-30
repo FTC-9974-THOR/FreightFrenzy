@@ -7,7 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.RedVisionPipeline;
+import org.firstinspires.ftc.teamcode.VisionPipeline;
+import org.firstinspires.ftc.teamcode.VisionPipeline;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
 import org.ftc9974.thorcore.control.math.Vector2;
@@ -34,8 +35,8 @@ public class RedDetectParkandPlace extends LinearOpMode{
     private Arm arm;
     private CarouselSpinner cs;
 
-    RedVisionPipeline pipeline;
-    RedVisionPipeline.DuckPosition position;
+    VisionPipeline pipeline;
+    VisionPipeline.DuckPosition position;
 
     @Override
     public void runOpMode() throws InterruptedException{
@@ -65,7 +66,7 @@ public class RedDetectParkandPlace extends LinearOpMode{
         // pipeline was never initialized and webcam.setPipeline() was being given a new pipeline
         // instance. pipeline stayed null and there was no way to access the pipeline that was
         // actually doing stuff.
-        pipeline = new RedVisionPipeline();
+        pipeline = new VisionPipeline();
         webcam.setPipeline(pipeline);
 
         md = new MecanumDrive(hardwareMap);
