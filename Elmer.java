@@ -142,15 +142,21 @@ public class Elmer extends OpMode {
             intake.closeDoor();
         }
 
-        /*
+
         if(gamepad1.dpad_up){
             miniArm.fullyRetractLinServos();
             miniArm.upTurn();
             upDownState = UpDownState.STRAIGHT_UP;
         } else if(gamepad1.dpad_down){
+            upDownState = UpDownState.STRAIGHT_UP;
             miniArm.middleLinServos();
             miniArm.straightDownTurn();
             miniArm.openClaw();
+        } else if(gamepad1.dpad_left){
+            miniArm.middleLinServos();
+            miniArm.stowTurn();
+        } else if(gamepad1.dpad_right){
+            miniArm.linServoPlaceCapstone();
         }
 
         if(gamepad1.b){
@@ -158,8 +164,6 @@ public class Elmer extends OpMode {
         } else if (gamepad1.a){
             miniArm.closeClawTSE();
         }
-
-        */
 
         if(turret.isUpDownHomed()){
             if(gamepad2.y){

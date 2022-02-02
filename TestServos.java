@@ -24,23 +24,6 @@ public class TestServos extends OpMode {
     Turret turret;
     MiniArm miniArm;
 
-    public enum UpDownState{
-        HOLD,
-        MANUAL,
-        DOWN,
-        LOW,
-        MIDDLE,
-        HIGH,
-        STRAIGHT_UP
-    }
-
-    UpDownState upDownState;
-
-    private BooleanEdgeDetector controlModeSwitchDetector;
-    private boolean controlModeSwitch;
-
-    private double upDownHoldPosition;
-
     private List<LynxModule> lynxModules;
 
     @Override
@@ -48,9 +31,6 @@ public class TestServos extends OpMode {
         turret = new Turret(hardwareMap);
         miniArm = new MiniArm(hardwareMap);
 
-        controlModeSwitch = false;
-        controlModeSwitchDetector = new BooleanEdgeDetector(false);
-        upDownState = UpDownState.MANUAL;
 
         lynxModules = hardwareMap.getAll(LynxModule.class);
         for (LynxModule lynxModule : lynxModules) {
@@ -105,82 +85,7 @@ public class TestServos extends OpMode {
         }
 
 
-        if(turret.isUpDownHomed()){
-            if(gamepad2.y){
-                upDownState = UpDownState.STRAIGHT_UP;//DIFFERENT
-            } else if(gamepad2.b){
-                upDownState = UpDownState.LOW;
-            } else if(gamepad2.a){
-                upDownState = UpDownState.DOWN;
-            } else if(gamepad2.x){
-                upDownState = UpDownState.MIDDLE;
-            }
-
-            if(Math.abs(upDownInput) > 0.01){//0.01
-                upDownState = UpDownState.MANUAL;
-            }
-        }
-
-        switch(upDownState){
-            case HOLD:
-
-                turret.setUpDownTargetPosition(upDownHoldPosition);
-                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(0.7);
-
-                if (Math.abs(upDownInput) > 0.01){
-                    upDownState = UpDownState.MANUAL;
-                }
-
-                break;
-            case MANUAL:
-
-                if(Math.abs(upDownInput) < 0.01){
-                    upDownState = UpDownState.HOLD;
-                    upDownHoldPosition = turret.getUpDownPosition();
-                }
-
-                turret.setUpDownMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                turret.setUpDownPowerManual(upDownInput);
-
-                break;
-
-            case LOW:
-                turret.setUpDownTargetPosition(27);//degrees
-                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(1);
-                break;
-            case MIDDLE:
-                turret.setUpDownTargetPosition(32);//degrees
-                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(0.5);
-                break;
-            case STRAIGHT_UP:
-                turret.setUpDownTargetPosition(90);//degrees
-                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(0.5);
-                break;
-            case HIGH:
-                turret.setUpDownTargetPosition(57);//degrees
-                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(0.5);
-                break;
-            case DOWN:
-                turret.setUpDownTargetPosition(0);//degrees
-                turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
-                turret.setUpDownPowerAutomatic(0.9);
-                break;
-        }
-
         turret.update();
-
-        telemetry.addData("UpDown homed:", turret.isUpDownHomed());
-        telemetry.addData("UpDown position in degrees:", turret.getUpDownPosition());
-        telemetry.addData("UpDown position in ticks:", turret.degreesToTicks(turret.getUpDownPosition()));
-        telemetry.addData("Up/Down State Machine", upDownState);
-
-        telemetry.addData("UpDown Velocity in degrees", turret.getUpDownVelocity());
-        telemetry.addData("UpDown Input", upDownInput);
 
         telemetry.update();
     }
