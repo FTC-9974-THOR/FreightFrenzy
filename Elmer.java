@@ -157,6 +157,8 @@ public class Elmer extends OpMode {
             miniArm.stowTurn();
         } else if(gamepad1.dpad_right){
             miniArm.linServoPlaceCapstone();
+        } else if(gamepad1.x){
+            turret.upDown.setPower(0);
         }
 
         if(gamepad1.b){

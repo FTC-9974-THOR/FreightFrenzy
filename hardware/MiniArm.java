@@ -13,15 +13,16 @@ import org.ftc9974.thorcore.util.MathUtilities;
 //turn: 885 to 2010
 public class MiniArm {
 
-    public static final double TURN_STOWED = MathUtilities.map(810, 810, 2010, 0, 1),
-            TURN_UP = MathUtilities.map(950, 810, 2010, 0, 1),
-            TURN_STRAIGHT_OUT = MathUtilities.map(1370, 810, 2010, 0,1),
-            TURN_DOWN = MathUtilities.map(1512, 810, 2010, 0, 1),//not 1512!
-            TURN_STRAIGHT_DOWN = MathUtilities.map(1930, 810, 2010, 0,1),
+    public static final double TURN_STOWED = MathUtilities.map(780, 700, 2010, 0, 1),
+            TURN_UP = MathUtilities.map(950, 700, 2010, 0, 1),
+            TURN_STRAIGHT_OUT = MathUtilities.map(1330, 700, 2010, 0,1),
+            TURN_DOWN = MathUtilities.map(1610, 700, 2010, 0, 1),//not 1512!
+            TURN_STRAIGHT_DOWN = MathUtilities.map(1930, 700, 2010, 0,1),
             LIN_SERVO_RETRACTED = MathUtilities.map(1100, 1000, 1900, 0,1),
             LIN_SERVO_LOWER_RETRACTED = MathUtilities.map(1300, 1000, 1900, 0,1),
             LIN_SERVO_PLACE_CAPSTONE = MathUtilities.map(1210,1000,1900, 0,1 ),
-            LIN_SERVO_MIDDLE = MathUtilities.map(1740, 1000, 1900, 0,1),
+            LIN_SERVO_MIDDLE = MathUtilities.map(1650, 1000, 1900, 0,1),
+            LIN_SERVO_LOW = MathUtilities.map(1760, 1000, 1900, 0, 1),
             LIN_SERVO_EXTENDED = MathUtilities.map(1880, 1000, 1900, 0,1),
             CLAW_OPEN = MathUtilities.map(800, 500, 2500, 0,1),
             CLAW_CLOSED_BLOCK = MathUtilities.map(1350, 500, 2500, 0,1),
@@ -35,7 +36,7 @@ public class MiniArm {
         Realizer.realize(this, hardwareMap);
 
         claw.setPwmRange(new PwmControl.PwmRange(500,2500));
-        turn.setPwmRange(new PwmControl.PwmRange(810,2010));
+        turn.setPwmRange(new PwmControl.PwmRange(700,2010));
 
         linServoDown.setPwmRange(new PwmControl.PwmRange(1000, 1900));
         linServoUp.setPwmRange(new PwmControl.PwmRange(1000, 1900));
@@ -84,6 +85,9 @@ public class MiniArm {
         setLinServoPosition(LIN_SERVO_MIDDLE);
     }
 
+    public void lowLinServos(){
+        setLinServoPosition(LIN_SERVO_LOW);
+    }
     public void linServoPlaceCapstone(){
         setLinServoPosition(LIN_SERVO_PLACE_CAPSTONE);
     }

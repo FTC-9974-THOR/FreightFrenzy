@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.teamcode.VisionPipeline;
+import org.firstinspires.ftc.teamcode.RedVisionPipeline;
 import org.firstinspires.ftc.teamcode.hardware.Arm;
 import org.firstinspires.ftc.teamcode.hardware.CarouselSpinner;
 import org.ftc9974.thorcore.control.math.Vector2;
@@ -35,8 +35,8 @@ public class RedPlaceandPark extends LinearOpMode {
     private Arm arm;
     private CarouselSpinner cs;
 
-    VisionPipeline pipeline;
-    VisionPipeline.DuckPosition position;
+    RedVisionPipeline pipeline;
+    RedVisionPipeline.DuckPosition position;
 
     ElapsedTime et;
 
@@ -65,7 +65,7 @@ public class RedPlaceandPark extends LinearOpMode {
             }
         });
 
-        pipeline = new VisionPipeline();
+        pipeline = new RedVisionPipeline();
         webcam.setPipeline(pipeline);
 
         md = new MecanumDrive(hardwareMap);
