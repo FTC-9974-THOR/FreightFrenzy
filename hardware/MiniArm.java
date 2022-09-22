@@ -13,11 +13,12 @@ import org.ftc9974.thorcore.util.MathUtilities;
 //turn: 885 to 2010
 public class MiniArm {
 
-    public static final double TURN_STOWED = MathUtilities.map(780, 700, 2010, 0, 1),
-            TURN_UP = MathUtilities.map(950, 700, 2010, 0, 1),
-            TURN_STRAIGHT_OUT = MathUtilities.map(1330, 700, 2010, 0,1),
-            TURN_DOWN = MathUtilities.map(1610, 700, 2010, 0, 1),//not 1512!
-            TURN_STRAIGHT_DOWN = MathUtilities.map(1930, 700, 2010, 0,1),
+    public static final double TURN_ALL_THE_WAY_BACK = MathUtilities.map(610, 500, 2500, 0, 1),
+            TURN_STOWED = MathUtilities.map(860, 500, 2500, 0,1),
+            TURN_UP = MathUtilities.map(950, 500, 2500, 0, 1),//all were 700 - 2010 2/11/2022
+            TURN_STRAIGHT_OUT = MathUtilities.map(1330, 500, 2500, 0,1),
+            TURN_DOWN = MathUtilities.map(1610, 500, 2500, 0, 1),//not 1512!
+            TURN_STRAIGHT_DOWN = MathUtilities.map(1930, 500, 2500, 0,1),
             LIN_SERVO_RETRACTED = MathUtilities.map(1100, 1000, 1900, 0,1),
             LIN_SERVO_LOWER_RETRACTED = MathUtilities.map(1300, 1000, 1900, 0,1),
             LIN_SERVO_PLACE_CAPSTONE = MathUtilities.map(1210,1000,1900, 0,1 ),
@@ -36,10 +37,10 @@ public class MiniArm {
         Realizer.realize(this, hardwareMap);
 
         claw.setPwmRange(new PwmControl.PwmRange(500,2500));
-        turn.setPwmRange(new PwmControl.PwmRange(700,2010));
+        turn.setPwmRange(new PwmControl.PwmRange(500,2500));//700, 2010
 
-        linServoDown.setPwmRange(new PwmControl.PwmRange(1000, 1900));
-        linServoUp.setPwmRange(new PwmControl.PwmRange(1000, 1900));
+        linServoDown.setPwmRange(new PwmControl.PwmRange(1000, 1880));
+        linServoUp.setPwmRange(new PwmControl.PwmRange(1000, 1880));
     }
 
     public void setClawPosition(double handPosition){
@@ -94,6 +95,10 @@ public class MiniArm {
 
     public void stowTurn(){
         setTurnPosition(TURN_STOWED);
+    }
+
+    public void turnAllTheWayBack(){
+        setTurnPosition(TURN_ALL_THE_WAY_BACK);
     }
 
     public void upTurn(){

@@ -165,16 +165,22 @@ public class Elmer extends OpMode {
             miniArm.openClaw();
         } else if (gamepad1.a){
             miniArm.closeClawTSE();
+        } else if (gamepad1.y){
+            miniArm.closeClawBlock();
         }
 
         if(turret.isUpDownHomed()){
             if(gamepad2.y){
+                intake.doorParOpen();
                 upDownState = UpDownState.HIGH;
             } else if(gamepad2.b){
+                intake.closeDoor();
                 upDownState = UpDownState.LOW;
             } else if(gamepad2.a){
+                intake.closeDoor();
                 upDownState = UpDownState.DOWN;
             } else if(gamepad2.x){
+                intake.closeDoor();
                 upDownState = UpDownState.MIDDLE;
             }
 
@@ -218,7 +224,7 @@ public class Elmer extends OpMode {
 
                 if(Math.abs(pivotInput) < 0.01){
                     pivotState = pivotState.HOLD;
-                    turret.setPivotTargetPosition(turret.getPivotPosition());
+                    pivotHoldPosition = turret.getPivotPosition();
                 }
 
                 //1/21/2022 I switched the order of the if statement and the two lines below

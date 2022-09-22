@@ -98,6 +98,10 @@ public class DuckSideBlueAuto extends LinearOpMode{
 
         f2.setMinTurningSpeed(0.3);
 
+        miniArm.closeClawBlock();
+        miniArm.turnAllTheWayBack();
+        miniArm.middleLinServos();
+
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Pipeline Has Analysis", pipeline.hasAnalysis());
 
@@ -214,7 +218,7 @@ public class DuckSideBlueAuto extends LinearOpMode{
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 100));
+                f2.driveToPoint(new Vector2(0, 50));
                 if(isStopRequested()){
                     return;
                 }
@@ -335,7 +339,7 @@ public class DuckSideBlueAuto extends LinearOpMode{
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 100));
+                f2.driveToPoint(new Vector2(0, 50));
                 if(isStopRequested()){
                     return;
                 }
@@ -380,6 +384,8 @@ public class DuckSideBlueAuto extends LinearOpMode{
 
                 break;
             case RIGHT:
+
+                miniArm.stowTurn();
 
                 f2.driveToPoint(new Vector2(-400, 100));
                 if(isStopRequested()){
@@ -453,7 +459,7 @@ public class DuckSideBlueAuto extends LinearOpMode{
                     return;
                 }
 
-                f2.driveToPoint(new Vector2(0, 100));
+                f2.driveToPoint(new Vector2(0, 50));
                 if(isStopRequested()){
                     return;
                 }

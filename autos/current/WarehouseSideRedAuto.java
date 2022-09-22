@@ -106,7 +106,8 @@ public class WarehouseSideRedAuto extends LinearOpMode{
         telemetry.update();
 
         miniarm.closeClawBlock();
-        miniarm.stowTurn();
+        miniarm.turnAllTheWayBack();
+        miniarm.middleLinServos();
 
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Pipeline Has Analysis", pipeline.hasAnalysis());
@@ -140,7 +141,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
                 miniarm.downTurn();
                 miniarm.middleLinServos();
 
-                f2.driveToPoint(new Vector2(-500, -200));
+                f2.driveToPoint(new Vector2(-500, -300));
                 if(isStopRequested()){
                     return;
                 }
@@ -195,8 +196,10 @@ public class WarehouseSideRedAuto extends LinearOpMode{
                 break;
             case RIGHT:
 
+                miniarm.stowTurn();
+
                 //1. drive to the alliance hub
-                f2.driveToPoint(new Vector2(-700, -200));
+                f2.driveToPoint(new Vector2(-750, -200));
                 if(isStopRequested()){
                     return;
                 }
@@ -252,7 +255,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(800,0), null,2000);
+        f2.driveToPoint(new Vector2(1000,0), null,2000);
         if(isStopRequested()){
             return;
         }
@@ -264,7 +267,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,1300), null,4000);
+        f2.driveToPoint(new Vector2(0,1400), null,4000);
         if(isStopRequested()){
             return;
         }
@@ -273,7 +276,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         intake.spinIntake(0);
 
-        f2.driveToPoint(new Vector2(-100,0));
+        f2.driveToPoint(new Vector2(100,0));
         if(isStopRequested()){
             return;
         }
@@ -285,7 +288,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
             return;
         }
 
-        f2.driveToPoint(new Vector2(0,-1200));
+        f2.driveToPoint(new Vector2(0,-1300));
         if(isStopRequested()){
             return;
         }
@@ -296,7 +299,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
         }
 
         //drives to place second freight
-        f2.driveToPoint(new Vector2(-600,0));
+        f2.driveToPoint(new Vector2(-700,0));
         if(isStopRequested()){
             return;
         }
@@ -311,7 +314,7 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1000);
 
-        turret.setPivotTargetPosition(90);
+        turret.setPivotTargetPosition(100);
         turret.setUpDownMode(DcMotor.RunMode.RUN_TO_POSITION);
         turret.setUpDownPowerAutomatic(0.7);
         if(isStopRequested()){
@@ -320,7 +323,8 @@ public class WarehouseSideRedAuto extends LinearOpMode{
 
         sleep(1000);
 
-        intake.spinIntake(-300);
+
+        intake.spinIntake(-200);
         if(isStopRequested()){
             return;
         }

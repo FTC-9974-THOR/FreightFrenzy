@@ -20,6 +20,7 @@ public class Intake {
     public ServoImplEx doorServo;
 
     public static final double DOOR_CLOSED = MathUtilities.map(2020, 500, 2500, 0,1),
+    DOOR_PART_OPEN = MathUtilities.map(1800,500,2500,0,1),
             DOOR_OPEN = MathUtilities.map(1520, 500, 2500, 0,1);// TODO: 1/24/2022 To be experimentally using the servo tester
 
     public Intake(HardwareMap hardwareMap){
@@ -39,5 +40,9 @@ public class Intake {
 
     public void closeDoor(){
         doorServo.setPosition(DOOR_CLOSED);
+    }
+
+    public void doorParOpen(){
+        doorServo.setPosition(DOOR_PART_OPEN);;
     }
 }

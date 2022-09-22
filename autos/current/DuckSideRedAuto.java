@@ -94,6 +94,10 @@ public class DuckSideRedAuto extends LinearOpMode{
 
         f2.setMinTurningSpeed(0.3);
 
+        miniArm.closeClawBlock();
+        miniArm.turnAllTheWayBack();
+        miniArm.middleLinServos();
+
         while (!isStarted() && !isStopRequested()) {
             telemetry.addData("Pipeline Has Analysis", pipeline.hasAnalysis());
 
@@ -152,9 +156,9 @@ public class DuckSideRedAuto extends LinearOpMode{
 
                 sleep(1000);
 
-                f2.setStartSpeed(0.2);
-                f2.setCruiseSpeed(0.3);
-                f2.setCrawlSpeed(0.2);
+                f2.setStartSpeed(0.4);
+                f2.setCruiseSpeed(0.5);
+                f2.setCrawlSpeed(0.4);
 
                 f2.driveToPoint(new Vector2(0, -400));
                 if(isStopRequested()){
@@ -205,16 +209,16 @@ public class DuckSideRedAuto extends LinearOpMode{
                     return;
                 }
 
-                f2.setStartSpeed(0.2);
-                f2.setCruiseSpeed(0.3);
-                f2.setCrawlSpeed(0.2);
+                f2.setStartSpeed(0.4);
+                f2.setCruiseSpeed(0.5);
+                f2.setCrawlSpeed(0.4);
 
                 f2.driveToPoint(new Vector2(0, -200));
                 if(isStopRequested()){
                     return;
                 }
 
-                cs.spinner.setPower(-0.55);
+                cs.spinner.setPower(-0.45);
 
                 sleep(3000);
 
@@ -259,9 +263,9 @@ public class DuckSideRedAuto extends LinearOpMode{
 
                 sleep(1000);
 
-                f2.setStartSpeed(0.2);
-                f2.setCruiseSpeed(0.3);
-                f2.setCrawlSpeed(0.2);
+                f2.setStartSpeed(0.4);
+                f2.setCruiseSpeed(0.5);
+                f2.setCrawlSpeed(0.4);
 
                 f2.driveToPoint(new Vector2(0, -300));
                 if(isStopRequested()){
@@ -312,16 +316,16 @@ public class DuckSideRedAuto extends LinearOpMode{
                     return;
                 }
 
-                f2.setStartSpeed(0.2);
-                f2.setCruiseSpeed(0.3);
-                f2.setCrawlSpeed(0.2);
+                f2.setStartSpeed(0.4);
+                f2.setCruiseSpeed(0.5);
+                f2.setCrawlSpeed(0.4);
 
                 f2.driveToPoint(new Vector2(0, -500));
                 if(isStopRequested()){
                     return;
                 }
 
-                cs.spinner.setPower(-0.55);
+                cs.spinner.setPower(-0.45);
 
                 sleep(3000);
 
@@ -344,6 +348,8 @@ public class DuckSideRedAuto extends LinearOpMode{
                 break;
             case RIGHT:
 
+                miniArm.stowTurn();
+
                 f2.driveToPoint(new Vector2(0, 300));
                 if(isStopRequested()){
                     return;
@@ -365,7 +371,11 @@ public class DuckSideRedAuto extends LinearOpMode{
 
                 sleep(1000);
 
-                f2.driveToPoint(new Vector2(0, -250));
+                f2.setStartSpeed(0.4);
+                f2.setCruiseSpeed(0.5);
+                f2.setCrawlSpeed(0.4);
+
+                f2.driveToPoint(new Vector2(0, -350));
                 if(isStopRequested()){
                     return;
                 }
@@ -395,7 +405,11 @@ public class DuckSideRedAuto extends LinearOpMode{
 
                 sleep(1500);
 
-                f2.driveToPoint(new Vector2(0, 300));
+                f2.setStartSpeed(0.7);
+                f2.setCruiseSpeed(1);
+                f2.setCrawlSpeed(0.4);
+
+                f2.driveToPoint(new Vector2(0, 400));
                 if(isStopRequested()){
                     return;
                 }
@@ -425,7 +439,7 @@ public class DuckSideRedAuto extends LinearOpMode{
                 }
 
                 //spins the ducks off
-                cs.spinner.setPower(-0.55);
+                cs.spinner.setPower(-0.45);
 
                 sleep(3000);
 
